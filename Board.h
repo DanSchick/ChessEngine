@@ -17,6 +17,12 @@ public:
      */
     Board();
 
+
+    /**
+     * The Game loop. Handles one method needed to call to start the game
+     */
+    void start();
+
     /**
      * prints out the current game board to cout
      */
@@ -32,9 +38,20 @@ public:
      */
     int inputMove(string input);
 
+    /**
+     * returns the chess board value from the chess notation
+     * ie, a2 becomes 0,2
+     */
+    int getIntValFromChar(char c);
+
 
 
 private:
+    // if black is checkmated
+    bool blackCheckmated = false;
+    // if white is checkmated
+    bool whiteCheckmated = false;
+    // true if whites turn
     bool whitesTurn = true;
     // 2D vector of the 8x8 chess board
     vector<vector<Piece*>> board = vector<vector<Piece*>>(8);

@@ -34,23 +34,53 @@ Board::Board() {
 
     /** ------------ SIXTH ROW -------------- */
     for(int i=0;i<8;i++){
-        board[i][6] = new Pawn(true, i, 6);
+        board[i][6] = new Pawn(false, i, 6);
     }
 
     /** ------------ SEVENTH ROW -------------- */
-    board[0][7] = new Rook(true, 0, 7);
-    board[1][7] = new Knight(true, 1, 7);
-    board[2][7] = new Bishop(true, 2, 7);
-    board[3][7] = new Queen(true, 3, 7);
-    board[4][7] = new King(true, 4, 7);
-    board[5][7] = new Bishop(true, 5, 7);
-    board[6][7] = new Knight(true, 6, 7);
-    board[7][7] = new Rook(true, 7, 7);
+    board[0][7] = new Rook(false, 0, 7);
+    board[1][7] = new Knight(false, 1, 7);
+    board[2][7] = new Bishop(false, 2, 7);
+    board[3][7] = new Queen(false, 3, 7);
+    board[4][7] = new King(false, 4, 7);
+    board[5][7] = new Bishop(false, 5, 7);
+    board[6][7] = new Knight(false, 6, 7);
+    board[7][7] = new Rook(false, 7, 7);
+}
+
+void Board::start() {
+    string moveInput;
+    int status;
+    while(true){
+        if(blackCheckmated || whiteCheckmated){
+            break;
+        }
+        this->print();
+
+        if(whitesTurn){
+            cout << "\n-----------\nWhite's Turn" << endl;
+        } else {
+            cout << "\n-----------\nBlack's Turn" << endl;
+        }
+        cout << "Enter your move: " << endl;
+
+        cin >> moveInput;
+        status = inputMove(moveInput);
+        if(status == 0){
+            // flip it to the others player turn
+            whitesTurn = !whitesTurn;
+        } else {
+            cout << "ERROR" << endl;
+        }
+
+
+
+    }
 }
 
 void Board::print() {
     for(int i=7;i>=0;i--){
-        for(int j=7;j>=0;j--){
+        for(int j=0;j<8;j++){
             if(board[j][i] == NULL){
                 cout << '_' << ' ';
             } else {
@@ -66,6 +96,10 @@ int Board::move(vector<int> from, vector<int> to) {
     if(movePiece == NULL){
         cout << "Invalid Piece specified" << endl;
         return 1;
+    }
+    if(movePiece->isWhite != this->whitesTurn){
+        cout << "It's not that piece's turn!" << endl;
+        return 4;
     }
     int moveStatus = movePiece->legalMove(to, board);
     if(moveStatus == 1){
@@ -96,49 +130,65 @@ int Board::move(vector<int> from, vector<int> to) {
 }
 
 int Board::inputMove(string input) {
-    vector<char> firstCoords = vector<char>(2);
-    vector<char> secondCoords = vector<char>(2);
+    vector<int> firstCoords = vector<int>(2);
+    vector<int> secondCoords = vector<int>(2);
 
-    vector<char> curStr = vector<char>();
+    vector<int> curStr = vector<int>();
 
     // will change to false after we take the first square from user
     bool firstPos = true;
 
-    cout << "flag" << endl;
 
     for(char c : input){
-        cout << c << endl;
         if (curStr.size() < 2) {
             if(c != '-') {
-                curStr.insert(curStr.end(), c);
+                if(isdigit(c)){
+                    // we need to convert from the ASCII value of the int to the actual int
+                    int g;
+                    g = c-48; // this gives us the actual number
+                    g = g - 1; // then we subtract one, because our board starts at 0 not 1
+                    curStr.insert(curStr.end(), g);
+                } else {
+                    int i;
+                    i = getIntValFromChar(c);
+                    curStr.insert(curStr.end(), i);
+                }
             }
         } else {
             if (firstPos) {
                 firstCoords[0] = curStr[0];
                 firstCoords[1] = curStr[1];
                 firstPos = false;
-            } else {
-                secondCoords[0] = curStr[0];
-                secondCoords[1] = curStr[1];
             }
             curStr.clear();
         }
 
-
-    }
-    for(int i=0;i<2;i++){
-        cout << "flag" << endl;
-        cout << "first " << i << " " << firstCoords[i] << endl;
-        cout << "second " << i << " " << secondCoords[i] << endl;
-
-
     }
 
-    return 0;
+    secondCoords[0] = curStr[0];
+    secondCoords[1] = curStr[1];
+
+    // make a move and return the validity of move to the game loop
+    int status;
+    status = move(firstCoords, secondCoords);
+    if(status == 0){
+        return 0;
+    } else {
+        return 1;
+    }
+}
 
 
-
-
-
+int Board::getIntValFromChar(char c) {
+    // simple switch to get the right board value from the char
+    switch(c){
+        case 'a': return 0;
+        case 'b': return 1;
+        case 'c': return 2;
+        case 'd': return 3;
+        case 'e': return 4;
+        case 'f': return 5;
+        case 'g': return 6;
+    }
 
 }

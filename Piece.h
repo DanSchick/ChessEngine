@@ -49,10 +49,12 @@ public:
      */
     virtual int legalMove(vector<int> newCoords, vector<vector<Piece*>> board) = 0;
 
+    // represents piece color. true if white
+    bool isWhite;
+
 
 
 protected:
-    bool isWhite;
     // represents x y coords
     vector<int> coords = vector<int>(2);
     // is name of piece. eg 'rook' 'king'

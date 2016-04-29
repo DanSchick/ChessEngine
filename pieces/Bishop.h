@@ -11,7 +11,11 @@
 class Bishop: public Piece {
 public:
     Bishop(bool white, int x, int y): Piece(white, x, y){
-        name = "B";
+        if(white) {
+            name = "B";
+        } else {
+            name = "b";
+        }
         value = 3;
     }
 

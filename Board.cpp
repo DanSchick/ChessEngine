@@ -79,7 +79,10 @@ void Board::start() {
 }
 
 void Board::print() {
+    cout << "   A B C D E F G H " << endl;
+    cout << "   --------------- " << endl;
     for(int i=7;i>=0;i--){
+        cout << i+1 << "| ";
         for(int j=0;j<8;j++){
             if(board[j][i] == NULL){
                 cout << '_' << ' ';
@@ -87,8 +90,10 @@ void Board::print() {
                 cout << board[j][i]->getName() << ' ';
             }
         }
-        cout << endl;
+        cout << "|" << i+1 << endl;
     }
+    cout << "   --------------- " << endl;
+    cout << "   A B C D E F G H " << endl;
 }
 
 int Board::move(vector<int> from, vector<int> to) {

@@ -11,7 +11,11 @@
 class King: public Piece {
 public:
     King(bool white, int x, int y): Piece(white, x, y){
-        name = "K";
+        if(white) {
+            name = "K";
+        } else {
+            name = "k";
+        }
         value = 1000;
     }
 

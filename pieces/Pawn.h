@@ -11,7 +11,11 @@
 class Pawn: public Piece {
 public:
     Pawn(bool white, int x, int y): Piece(white, x, y){
-        name = "P";
+        if(white) {
+            name = "P";
+        } else {
+            name = "p";
+        }
         value = 1;
     }
 

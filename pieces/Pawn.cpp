@@ -31,10 +31,10 @@ int Pawn::legalMove(vector<int> newCoords, vector<vector<Piece *>> board) {
             // a pawn can't move 3 spaces
             return 1;
         }
-        if((newCoords[1] - coords[1]) == 2 && leap){
+        if((newCoords[1] - coords[1]) == 2 && leap ){
             // the pawn can do it's special leap move off the starting block
             // check if there's any pieces in the way
-            if(board[coords[0]][coords[1]+1] != NULL){
+            if(board[coords[0]][coords[1]+1] != NULL || board[newCoords[0]][newCoords[1]] != NULL){
                 // there is a piece in the way
                 return 2;
             } else {
@@ -42,7 +42,6 @@ int Pawn::legalMove(vector<int> newCoords, vector<vector<Piece *>> board) {
                 coords = newCoords;
                 return 0;
             }
-
         } else if((newCoords[1] - coords[1]) == 2 && !leap){
             // can't move 2 squares if the piece has moved already
             return 1;

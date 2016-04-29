@@ -11,7 +11,11 @@
 class Rook: public Piece {
 public:
     Rook(bool white, int x, int y): Piece(white, x, y){
-        name = "R";
+        if(white) {
+            name = "R";
+        } else {
+            name = "r";
+        }
         value = 5;
     }
 

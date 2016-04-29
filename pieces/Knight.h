@@ -11,7 +11,11 @@
 class Knight: public Piece {
 public:
     Knight(bool white, int x, int y): Piece(white, x, y){
-        name = "N";
+        if(white) {
+            name = "N";
+        } else {
+            name = "n";
+        }
         value = 3;
     }
 

@@ -35,4 +35,9 @@ vector<int> Piece::getPos() {
     return coords;
 }
 
+vector<int> Piece::setPos(vector<int> newPos) {
+    coords = newPos;
+
+}
+
 

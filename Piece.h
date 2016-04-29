@@ -40,6 +40,11 @@ public:
     vector<int> getPos();
 
     /**
+     * sets the coords array
+     */
+    vector<int> setPos(vector<int> newPos);
+
+    /**
      * return current y val
      */
     int getY();

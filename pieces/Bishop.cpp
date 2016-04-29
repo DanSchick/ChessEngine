@@ -12,12 +12,12 @@ int Bishop::legalMove(vector<int> newCoords, vector<vector<Piece *>> board) {
             // can't move beyond board limit
             return 1;
         }
-        if(newCoords[1] < coords[1] || newCoords == coords || newCoords[1] == coords[1]){
-            // can't move a pawn behind itself or to the same place
+        if(newCoords == coords){
+            // can't move to same place
             return 1;
         }
         if(newCoords[0] - coords[0] == newCoords[1] - coords[1]){
-            coords = newCoords;
+            // VALID. check that pieces aren't in the way
             return 0;
         }
 

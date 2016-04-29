@@ -51,11 +51,11 @@ Board::Board() {
 void Board::start() {
     string moveInput;
     int status;
+    this->print();
     while(true){
         if(blackCheckmated || whiteCheckmated){
             break;
         }
-        this->print();
 
         if(whitesTurn){
             cout << "\n-----------\nWhite's Turn" << endl;
@@ -69,6 +69,7 @@ void Board::start() {
         if(status == 0){
             // flip it to the others player turn
             whitesTurn = !whitesTurn;
+            this->print();
         } else {
             cout << "ERROR" << endl;
         }
@@ -85,7 +86,11 @@ void Board::print() {
         cout << i+1 << "| ";
         for(int j=0;j<8;j++){
             if(board[j][i] == NULL){
-                cout << '_' << ' ';
+                if(j % 2 == 0) {
+                    cout << '-' << ' ';
+                } else {
+                    cout << '-' << ' ';
+                }
             } else {
                 cout << board[j][i]->getName() << ' ';
             }
@@ -94,6 +99,21 @@ void Board::print() {
     }
     cout << "   --------------- " << endl;
     cout << "   A B C D E F G H " << endl;
+
+    if(!whiteCaptured.empty()){
+        cout << "Captured White Pieces: ";
+        for(Piece* p : whiteCaptured){
+            cout << p->getName();
+        }
+        cout << endl;
+    }
+    if(!blackCaptured.empty()){
+        cout << "Captured Black Pieces: ";
+        for(Piece* p : blackCaptured){
+            cout << p->getName();
+        }
+        cout << endl;
+    }
 }
 
 int Board::move(vector<int> from, vector<int> to) {
@@ -118,9 +138,15 @@ int Board::move(vector<int> from, vector<int> to) {
     if(moveStatus == 0){
         // we move the piece
         // check if there's a capture
-        if(board[to[0]][to[1]] != NULL){
+        movePiece->setPos(to);
+        if(board[to[0]][to[1]] != NULL && movePiece->isWhite != board[to[0]][to[1]]->isWhite){
+            Piece* captured = board[to[0]][to[1]];
             // there's a capture
-            captured.insert(captured.end(), board[to[0]][to[1]]);
+            if(captured->isWhite){
+                whiteCaptured.insert(whiteCaptured.end(), captured);
+            } else {
+                blackCaptured.insert(blackCaptured.end(), captured);
+            }
             board[to[0]][to[1]] = movePiece;
             board[from[0]][from[1]] = NULL;
             return 0;
@@ -133,6 +159,10 @@ int Board::move(vector<int> from, vector<int> to) {
     }
 
 }
+
+
+
+
 
 int Board::inputMove(string input) {
     vector<int> firstCoords = vector<int>(2);
@@ -182,6 +212,9 @@ int Board::inputMove(string input) {
         return 1;
     }
 }
+
+
+
 
 
 int Board::getIntValFromChar(char c) {

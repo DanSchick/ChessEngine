@@ -56,7 +56,8 @@ private:
     // 2D vector of the 8x8 chess board
     vector<vector<Piece*>> board = vector<vector<Piece*>>(8);
     // list of all captured pieces
-    vector<Piece*> captured;
+    vector<Piece*> whiteCaptured;
+    vector<Piece*> blackCaptured;
 };
 
 

@@ -15,7 +15,7 @@ class Piece {
 public:
     Piece();
     /**
-     * default contructor
+     * default constructor
      */
     Piece(bool white, int x, int y);
 

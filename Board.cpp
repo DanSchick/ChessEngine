@@ -135,7 +135,6 @@ int Board::move(vector<int> from, vector<int> to) {
         // we move the piece
         // check if there's a capture
         movePiece->setPos(to);
-        //TODO: move this code to piece's move validation
         if(board[to[0]][to[1]] != NULL && movePiece->isWhite != board[to[0]][to[1]]->isWhite){
             Piece* captured = board[to[0]][to[1]];
             // there's a capture

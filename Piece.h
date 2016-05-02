@@ -30,9 +30,10 @@ public:
     int getID();
 
     /**
-     * returns current x val
+     * gets the piece value
      */
-    int getX();
+    int getVal();
+
 
     /**
      * returns the coords array
@@ -43,6 +44,11 @@ public:
      * sets the coords array
      */
     vector<int> setPos(vector<int> newPos);
+
+    /**
+     * returns current x val
+     */
+    int getX();
 
     /**
      * return current y val

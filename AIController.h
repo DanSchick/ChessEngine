@@ -18,7 +18,9 @@ public:
 
     AIController(bool isWhite, Board givenBoard);
 
-    double evaluate();
+    double evaluateBlack();
+
+    double evaluateWhite();
 
 
 private:

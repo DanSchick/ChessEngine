@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <algorithm>
 #include "Board.h"
 #include "pieces/Rook.h"
 #include "pieces/Knight.h"
@@ -10,6 +11,7 @@
 #include "pieces/Queen.h"
 #include "pieces/King.h"
 #include "pieces/Pawn.h"
+#include "AIController.h"
 
 Board::Board() {
     // populate with the 2nd dimension vector
@@ -24,31 +26,46 @@ Board::Board() {
     board[2][0] = new Bishop(true, 2, 0);
     whitePieces.insert(whitePieces.end(),board[2][0]);
     board[3][0] = new Queen(true, 3, 0);
+    whitePieces.insert(whitePieces.end(),board[3][0]);
     board[4][0] = new King(true, 4, 0);
+    whitePieces.insert(whitePieces.end(),board[4][0]);
     board[5][0] = new Bishop(true, 5, 0);
+    whitePieces.insert(whitePieces.end(),board[5][0]);
     board[6][0] = new Knight(true, 6, 0);
+    whitePieces.insert(whitePieces.end(),board[6][0]);
     board[7][0] = new Rook(true, 7, 0);
+    whitePieces.insert(whitePieces.end(),board[7][0]);
 
     /** ------------ SECOND ROW -------------- */
     for(int i=0;i<8;i++){
         board[i][1] = new Pawn(true, i, 1);
+        whitePieces.insert(whitePieces.end(),board[i][1]);
     }
 
 
     /** ------------ SIXTH ROW -------------- */
     for(int i=0;i<8;i++){
         board[i][6] = new Pawn(false, i, 6);
+        blackPieces.insert(blackPieces.end(),board[i][6]);
     }
 
     /** ------------ SEVENTH ROW -------------- */
     board[0][7] = new Rook(false, 0, 7);
+    blackPieces.insert(blackPieces.end(),board[0][7]);
     board[1][7] = new Knight(false, 1, 7);
+    blackPieces.insert(blackPieces.end(),board[1][7]);
     board[2][7] = new Bishop(false, 2, 7);
+    blackPieces.insert(blackPieces.end(),board[2][7]);
     board[3][7] = new Queen(false, 3, 7);
+    blackPieces.insert(blackPieces.end(), board[3][7]);
     board[4][7] = new King(false, 4, 7);
+    blackPieces.insert(blackPieces.end(),board[4][7]);
     board[5][7] = new Bishop(false, 5, 7);
+    blackPieces.insert(blackPieces.end(),board[5][7]);
     board[6][7] = new Knight(false, 6, 7);
+    blackPieces.insert(blackPieces.end(),board[6][7]);
     board[7][7] = new Rook(false, 7, 7);
+    blackPieces.insert(blackPieces.end(),board[7][7]);
 }
 
 void Board::start() {
@@ -58,6 +75,7 @@ void Board::start() {
     blackKing = board[4][7];
 
     string moveInput;
+    AIController AI = AIController(false, *this);
     int status;
     this->print();
     while(true){
@@ -70,6 +88,8 @@ void Board::start() {
         } else {
             cout << "\n-----------\nBlack's Turn" << endl;
         }
+        cout << "White Material Value: " << AI.evaluateWhite() << endl;
+        cout << "Black Material Value: " << AI.evaluateBlack() << endl;
         cout << "Enter your move: " << endl;
 
         cin >> moveInput;
@@ -148,8 +168,10 @@ int Board::move(vector<int> from, vector<int> to) {
             Piece* captured = board[to[0]][to[1]];
             // there's a capture
             if(captured->isWhite){
+                whitePieces.erase(std::remove(whitePieces.begin(), whitePieces.end(), captured),whitePieces.end());
                 whiteCaptured.insert(whiteCaptured.end(), captured);
             } else {
+                blackPieces.erase(std::remove(blackPieces.begin(), blackPieces.end(), captured),blackPieces.end());
                 blackCaptured.insert(blackCaptured.end(), captured);
             }
             board[to[0]][to[1]] = movePiece;

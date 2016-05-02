@@ -22,6 +22,10 @@ int Piece::getID() {
     return ID;
 }
 
+int Piece::getVal() {
+    return value;
+}
+
 int Piece::getX() {
     return coords[0];
 }

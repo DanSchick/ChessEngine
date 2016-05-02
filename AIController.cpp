@@ -13,13 +13,19 @@ AIController::AIController(bool isWhite, Board givenGame) {
     game = givenGame;
 }
 
-double AIController::evaluate() {
-    for(vector<Piece*> vec : game.board){
-        for(Piece* p : vec){
-            if(p != NULL){
-
-            }
-        }
-
+double AIController::evaluateBlack() {
+    double materialValue = 0;
+    for(Piece* p : game.blackPieces){
+        materialValue += p->getVal();
     }
+    return materialValue;
+}
+
+
+double AIController::evaluateWhite() {
+    double materialValue = 0;
+    for(Piece* p : game.whitePieces){
+        materialValue += p->getVal();
+    }
+    return materialValue;
 }

@@ -45,12 +45,28 @@ public:
     int getIntValFromChar(char c);
 
 
+    /**
+     *----------------- VARIABLES ----------------------
+     */
 
-private:
+    vector<Piece*> whitePieces = vector<Piece*>();
+    vector<Piece*> blackPieces = vector<Piece*>();
+
+
+
+
+
+    // holds white king and black king. makes checking for checkmate easier
+    Piece* whiteKing;
+    Piece* blackKing;
     // if black is checkmated
     bool blackCheckmated = false;
     // if white is checkmated
     bool whiteCheckmated = false;
+    // if black is in check
+    bool blackInCheck = false;
+    // if white is in check
+    bool whiteInCheck = false;
     // true if whites turn
     bool whitesTurn = true;
     // 2D vector of the 8x8 chess board

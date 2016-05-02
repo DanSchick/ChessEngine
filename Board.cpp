@@ -18,8 +18,11 @@ Board::Board() {
     }
     /** ------------ FIRST ROW -------------- */
     board[0][0] = new Rook(true, 0, 0);
+    whitePieces.insert(whitePieces.end(),board[0][0]);
     board[1][0] = new Knight(true, 1, 0);
+    whitePieces.insert(whitePieces.end(),board[1][0]);
     board[2][0] = new Bishop(true, 2, 0);
+    whitePieces.insert(whitePieces.end(),board[2][0]);
     board[3][0] = new Queen(true, 3, 0);
     board[4][0] = new King(true, 4, 0);
     board[5][0] = new Bishop(true, 5, 0);
@@ -49,6 +52,11 @@ Board::Board() {
 }
 
 void Board::start() {
+
+    // get black and white king
+    whiteKing = board[4][0];
+    blackKing = board[4][7];
+
     string moveInput;
     int status;
     this->print();
@@ -113,6 +121,7 @@ void Board::print() {
 }
 
 int Board::move(vector<int> from, vector<int> to) {
+    //TODO: make sure move can't be made in a check
     Piece* movePiece = board[from[0]][from[1]];
     if(movePiece == NULL){
         cout << "Invalid Piece specified" << endl;
@@ -227,6 +236,7 @@ int Board::getIntValFromChar(char c) {
         case 'e': return 4;
         case 'f': return 5;
         case 'g': return 6;
+        default: return -1;
     }
 
 }

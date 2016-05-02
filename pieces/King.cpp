@@ -13,7 +13,14 @@ int King::legalMove(vector<int> newCoords, vector<vector<Piece *>> board) {
 
     if(xDiff <= 1 && yDiff <= 1){
         // VALID. check if piece in the way
+        if(board[newCoords[0]][newCoords[1]] == NULL){
+            return 0;
+        } else {
+            return 2;
+        }
 
     }
+
+    return 1;
 
 }

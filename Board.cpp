@@ -86,11 +86,7 @@ void Board::print() {
         cout << i+1 << "| ";
         for(int j=0;j<8;j++){
             if(board[j][i] == NULL){
-                if(j % 2 == 0) {
                     cout << '-' << ' ';
-                } else {
-                    cout << '-' << ' ';
-                }
             } else {
                 cout << board[j][i]->getName() << ' ';
             }
@@ -139,6 +135,7 @@ int Board::move(vector<int> from, vector<int> to) {
         // we move the piece
         // check if there's a capture
         movePiece->setPos(to);
+        //TODO: move this code to piece's move validation
         if(board[to[0]][to[1]] != NULL && movePiece->isWhite != board[to[0]][to[1]]->isWhite){
             Piece* captured = board[to[0]][to[1]];
             // there's a capture
@@ -156,6 +153,10 @@ int Board::move(vector<int> from, vector<int> to) {
             board[from[0]][from[1]] = NULL;
             return 0;
         }
+    }
+
+    else{
+        return 1;
     }
 
 }

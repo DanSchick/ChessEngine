@@ -12,6 +12,17 @@
 
 
 AnalysisBoard::AnalysisBoard(Board* given) {
+    whitePieces = given->whitePieces;
+    blackPieces = given->blackPieces;
+    whiteKing = given->whiteKing;
+    blackKing = given->blackKing;
+    blackCheckmated = given->blackCheckmated;
+    whiteCheckmated = given->whiteCheckmated;
+    blackInCheck = given->blackInCheck;
+    whiteInCheck = given->whiteInCheck;
+    whitesTurn = given->whitesTurn;
+    whiteCaptured = given->whiteCaptured;
+    blackCaptured = given->blackCaptured;
     for(int i=0;i<8;i++) {
         board[i] = vector<Piece*>(8);
     }

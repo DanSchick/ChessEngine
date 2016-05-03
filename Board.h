@@ -21,7 +21,7 @@ public:
     /**
      * The Game loop. Handles one method needed to call to start the game
      */
-    void start();
+//    void start();
 
     /**
      * prints out the current game board to cout
@@ -43,6 +43,8 @@ public:
      * ie, a2 becomes 0,2
      */
     int getIntValFromChar(char c);
+
+    ~Board();
 
 
     /**

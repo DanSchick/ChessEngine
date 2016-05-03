@@ -68,48 +68,6 @@ Board::Board() {
     blackPieces.insert(blackPieces.end(),board[7][7]);
 }
 
-void Board::start() {
-
-    // get black and white king
-    whiteKing = board[4][0];
-    blackKing = board[4][7];
-
-    string moveInput;
-    AIController AI = AIController(false, this);
-    int status;
-    this->print();
-    while(true){
-        if(blackCheckmated || whiteCheckmated){
-            break;
-        }
-
-        if(whitesTurn){
-            cout << "\n-----------\nWhite's Turn" << endl;
-        } else {
-            cout << "\n-----------\nBlack's Turn" << endl;
-        }
-        cout << "White Material Value: " << AI.evaluateWhiteMaterial() << endl;
-        cout << "Black Material Value: " << AI.evaluateBlackMaterial() << endl;
-        cout << "Board Eval: " << AI.evaluate() << endl;
-        cout << "generation moves... " << endl;
-        AI.moveGenerator();
-        print();
-        cout << "Enter your move: " << endl;
-
-        cin >> moveInput;
-        status = inputMove(moveInput);
-        if(status == 0){
-            // flip it to the others player turn
-            whitesTurn = !whitesTurn;
-            this->print();
-        } else {
-            cout << "ERROR" << endl;
-        }
-
-
-
-    }
-}
 
 void Board::print() {
     cout << "   A B C D E F G H " << endl;
@@ -176,13 +134,22 @@ int Board::move(vector<int> from, vector<int> to, bool verifyOnly) {
         if(board[to[0]][to[1]] != NULL && movePiece->isWhite != board[to[0]][to[1]]->isWhite){
             Piece* captured = board[to[0]][to[1]];
             // there's a capture
+            vector<Piece*> pieceList;
             if(captured->isWhite){
-                whitePieces.erase(std::remove(whitePieces.begin(), whitePieces.end(), captured),whitePieces.end());
+                pieceList = whitePieces;
                 whiteCaptured.insert(whiteCaptured.end(), captured);
             } else {
-                blackPieces.erase(std::remove(blackPieces.begin(), blackPieces.end(), captured),blackPieces.end());
+                pieceList = blackPieces;
                 blackCaptured.insert(blackCaptured.end(), captured);
             }
+
+            for(int i=0;i<pieceList.size();i++){
+                if(pieceList[i] == captured){
+                    pieceList.erase(pieceList.begin() + i);
+                }
+
+            }
+
             board[to[0]][to[1]] = movePiece;
             board[from[0]][from[1]] = NULL;
             return 0;
@@ -269,4 +236,8 @@ int Board::getIntValFromChar(char c) {
         case 'g': return 6;
         default: return -1;
     }
+}
+
+Board::~Board() {
+    delete this;
 }

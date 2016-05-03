@@ -2,13 +2,14 @@
 #include <stdio.h>
 #include "Piece.h"
 #include "Board.h"
+#include "GameController.h"
 
 using namespace std;
 
 int main() {
 
-    Board game = Board();
-    game.start();
+    Board* gameBoard = new Board();
+    GameController game = GameController(gameBoard);
 
 
 

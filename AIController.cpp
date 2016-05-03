@@ -16,18 +16,18 @@ AIController::AIController(bool isWhite, Board *givenGame) {
     game = givenGame;
 }
 
-int AIController::evaluateBlackMaterial(){
+int AIController::evaluateBlackMaterial(Board* b){
     int materialValue = 0;
-    for(Piece* p : game->blackPieces){
+    for(Piece* p : b->blackPieces){
         materialValue += p->getVal();
     }
     return materialValue;
 }
 
 
-int AIController::evaluateWhiteMaterial() {
+int AIController::evaluateWhiteMaterial(Board* b) {
     int materialValue = 0;
-    for(Piece* p : game->whitePieces){
+    for(Piece* p : b->whitePieces){
         materialValue += p->getVal();
     }
     return materialValue;
@@ -36,7 +36,7 @@ int AIController::evaluateWhiteMaterial() {
 int AIController::evaluate(Board* b) {
     // gives a general board evaluation
     // higher the better
-    int materialWeight = evaluateBlackMaterial() + evaluateWhiteMaterial();
+    int materialWeight = evaluateBlackMaterial(b) + evaluateWhiteMaterial(b);
     int numPieceDifference = b->whitePieces.size() - b->blackPieces.size();
     int whoToMove;
     if(b->whitesTurn){
@@ -49,11 +49,55 @@ int AIController::evaluate(Board* b) {
     return result;
 }
 
+Board* AIController::getBestMove(Board *b) {
+
+    vector<Board*> possibleMoves = moveGenerator(b);
+    vector<vector<Piece*>> bestMove = vector<vector<Piece*>>();
+    Board* bestBoard;
+
+    int maxScore = -std::numeric_limits<int>::max();
+    int alpha = -std::numeric_limits<int>::max();
+    int beta = std::numeric_limits<int>::max();
+
+    for(Board* move : possibleMoves){
+        int score = -negaMax(b, DEPTH);
+        if(score > maxScore){
+            bestBoard = move;
+            maxScore = score;
+        }
+    }
+    return bestBoard;
+}
+
+// ALPHA BETA ---------------------------------------------------------
+//int AIController::negaMax(Board* b, int depth, int alpha, int beta) {
+//    if(depth > maxDepth) return evaluate(b);
+//    int max = -std::numeric_limits<int>::max();
+//    for(vector<vector<Piece*>> move : moveGenerator(b)){
+//        Board* c = new AnalysisBoard(b);
+//        c->board = move;
+//        int score = -negaMax(c, depth+1, -beta, -alpha);
+//        if(score > max){
+//            max = score;
+//        } if(score > alpha){
+//            alpha = score;
+//        } if(alpha >= beta){
+//            return alpha;
+//        }
+//    }
+//    return max;
+//
+//
+//}
+
+
+// ----------- OLD VERSION THAT WORKS ---------------
 int AIController::negaMax(Board* b, int depth) {
     if(depth == 0) return evaluate(b);
     int max = -std::numeric_limits<int>::max();
-    for(vector<vector<Piece*>> move : moveGenerator(b)){
-        int score = -negaMax(b, depth -1);
+    for(Board* move : moveGenerator(b)){
+        Board* c = new AnalysisBoard(move);
+        int score = -negaMax(c, depth -1);
         if(score > max){
             max = score;
         }
@@ -63,7 +107,7 @@ int AIController::negaMax(Board* b, int depth) {
 
 }
 
-vector<vector<vector<Piece*>>> AIController::moveGenerator(Board* givenGame) {
+vector<Board*> AIController::moveGenerator(Board* givenGame) {
     vector<Piece*> pieceList;
     if(givenGame->whitesTurn){
         pieceList = givenGame->whitePieces;
@@ -71,7 +115,7 @@ vector<vector<vector<Piece*>>> AIController::moveGenerator(Board* givenGame) {
         pieceList = givenGame->blackPieces;
     }
     // vector of boards that have made valid moves
-    vector<vector<vector<Piece*>>> moveList;
+    vector<Board*> moveList = vector<Board*>();
     Board* curBoard;
     // so the problem is that curBoard does a shallow copy of it's parameter's board
 
@@ -87,7 +131,7 @@ vector<vector<vector<Piece*>>> AIController::moveGenerator(Board* givenGame) {
 
                 int moveStatus = curBoard->move(p->getPos(), checkCoords, true);
                 if(moveStatus == 0){
-                    moveList.insert(moveList.end(),curBoard->board);
+                    moveList.insert(moveList.end(),curBoard);
                 }
 
             }

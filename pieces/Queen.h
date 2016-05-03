@@ -10,6 +10,7 @@
 class Queen: public Piece {
 public:
     Queen(bool white, int x, int y): Piece(white, x, y){
+        ID = 4;
         if(white) {
             name = "Q";
         } else {

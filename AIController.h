@@ -16,15 +16,17 @@ public:
 
     AIController(bool isWhite, Board *givenBoard);
 
-    double evaluateBlackMaterial();
+    int evaluateBlackMaterial();
 
-    double evaluateWhiteMaterial();
+    int evaluateWhiteMaterial();
 
-    double evaluate();
+    int evaluate(Board* b);
 
-    double negaMax(int depth);
+    int negaMax(Board* b, int depth);
 
     //TODO: create a method that returns all available moves relative to side
+
+    vector<vector<vector<Piece*>>> moveGenerator(Board* givenGame);
 
 
 private:

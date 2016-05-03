@@ -31,7 +31,7 @@ public:
     /**
      * checks a move and executes if possible
      */
-    int move(vector<int> from, vector<int> to);
+    int move(vector<int> from, vector<int> to, bool verifyOnly);
 
     /**
      * take input from user for a move

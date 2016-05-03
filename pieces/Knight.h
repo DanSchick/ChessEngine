@@ -11,6 +11,7 @@
 class Knight: public Piece {
 public:
     Knight(bool white, int x, int y): Piece(white, x, y){
+        ID = 2;
         if(white) {
             name = "N";
         } else {

@@ -11,6 +11,7 @@
 class Rook: public Piece {
 public:
     Rook(bool white, int x, int y): Piece(white, x, y){
+        ID = 5;
         if(white) {
             name = "R";
         } else {

@@ -91,6 +91,9 @@ void Board::start() {
         cout << "White Material Value: " << AI.evaluateWhiteMaterial() << endl;
         cout << "Black Material Value: " << AI.evaluateBlackMaterial() << endl;
         cout << "Board Eval: " << AI.evaluate() << endl;
+        cout << "generation moves... " << endl;
+        AI.moveGenerator();
+        print();
         cout << "Enter your move: " << endl;
 
         cin >> moveInput;
@@ -146,23 +149,23 @@ void Board::print() {
     }
 }
 
-int Board::move(vector<int> from, vector<int> to) {
+int Board::move(vector<int> from, vector<int> to, bool verifyOnly) {
     //TODO: make sure move can't be made in a check
     Piece* movePiece = board[from[0]][from[1]];
     if(movePiece == NULL){
-        cout << "Invalid Piece specified" << endl;
+//        cout << "Invalid Piece specified" << endl;
         return 1;
     }
     if(movePiece->isWhite != this->whitesTurn){
-        cout << "It's not that piece's turn!" << endl;
+//        cout << "It's not that piece's turn!" << endl;
         return 4;
     }
     int moveStatus = movePiece->legalMove(to, board);
     if(moveStatus == 1){
-        cout << "Invalid destination" << endl;
+//        cout << "Invalid destination" << endl;
         return 1;
     } else if(moveStatus == 2){
-        cout << "a piece is blocking the way";
+//        cout << "a piece is blocking the way";
         return 1;
     }
 
@@ -242,7 +245,7 @@ int Board::inputMove(string input) {
 
     // make a move and return the validity of move to the game loop
     int status;
-    status = move(firstCoords, secondCoords);
+    status = move(firstCoords, secondCoords, false);
     if(status == 0){
         return 0;
     } else {
@@ -266,5 +269,4 @@ int Board::getIntValFromChar(char c) {
         case 'g': return 6;
         default: return -1;
     }
-
 }

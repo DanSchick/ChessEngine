@@ -64,6 +64,8 @@ public:
     bool isWhite;
 
 
+    // relative value of piece
+    int value;
 
 protected:
     // represents x y coords
@@ -72,8 +74,6 @@ protected:
     string name;
     // is two digit piece id
     int ID;
-    // relative value of piece
-    int value;
 
 
 

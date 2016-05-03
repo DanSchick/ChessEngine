@@ -75,7 +75,7 @@ void Board::start() {
     blackKing = board[4][7];
 
     string moveInput;
-    AIController AI = AIController(false, *this);
+    AIController AI = AIController(false, this);
     int status;
     this->print();
     while(true){
@@ -88,8 +88,9 @@ void Board::start() {
         } else {
             cout << "\n-----------\nBlack's Turn" << endl;
         }
-        cout << "White Material Value: " << AI.evaluateWhite() << endl;
-        cout << "Black Material Value: " << AI.evaluateBlack() << endl;
+        cout << "White Material Value: " << AI.evaluateWhiteMaterial() << endl;
+        cout << "Black Material Value: " << AI.evaluateBlackMaterial() << endl;
+        cout << "Board Eval: " << AI.evaluate() << endl;
         cout << "Enter your move: " << endl;
 
         cin >> moveInput;
@@ -125,6 +126,11 @@ void Board::print() {
     cout << "   A B C D E F G H " << endl;
 
     if(!whiteCaptured.empty()){
+        cout << "W: ";
+        for(Piece* p : whitePieces){
+            cout << p->getName() << " ";
+        }
+        cout << endl;
         cout << "Captured White Pieces: ";
         for(Piece* p : whiteCaptured){
             cout << p->getName();

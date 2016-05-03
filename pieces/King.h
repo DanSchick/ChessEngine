@@ -16,7 +16,7 @@ public:
         } else {
             name = "k";
         }
-        value = 1000;
+        value = 32767;
     }
 
     int legalMove(vector<int> newCoords, vector<vector<Piece*>> board);

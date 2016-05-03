@@ -9,24 +9,28 @@
 #include "Board.h"
 
 class AIController {
-    // allows access to private members. Important for evaluation
-    friend class Board;
 public:
     // defaults to controlling black
     // but will have no board stored
     AIController();
 
-    AIController(bool isWhite, Board givenBoard);
+    AIController(bool isWhite, Board *givenBoard);
 
-    double evaluateBlack();
+    double evaluateBlackMaterial();
 
-    double evaluateWhite();
+    double evaluateWhiteMaterial();
+
+    double evaluate();
+
+    double negaMax(int depth);
+
+    //TODO: create a method that returns all available moves relative to side
 
 
 private:
     bool controlWhite;
 
-    Board game;
+    Board* game;
 };
 
 

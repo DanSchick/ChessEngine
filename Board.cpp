@@ -138,10 +138,12 @@ int Board::move(vector<int> from, vector<int> to, bool verifyOnly) {
             if(captured->isWhite){
                 pieceList = whitePieces;
                 whiteCaptured.insert(whiteCaptured.end(), captured);
+                captured->capture();
                 whiteCount -= 1;
             } else {
                 pieceList = blackPieces;
                 blackCaptured.insert(blackCaptured.end(), captured);
+                captured->capture();
                 blackCount -= 1;
             }
 
@@ -237,6 +239,7 @@ int Board::getIntValFromChar(char c) {
         case 'e': return 4;
         case 'f': return 5;
         case 'g': return 6;
+        case 'h': return 7;
         default: return -1;
     }
 }
@@ -263,10 +266,14 @@ vector<Piece*> Board::copyPieceVector(vector<Piece *> vec) {
     for(Piece* p : vec){
         returnVec.insert(returnVec.end(), getPieceCopy(p));
     }
-    delete vec;
+    delete &vec;
     return returnVec;
 }
 
 Board::~Board() {
-    delete this;
+//    delete &board;
+//    delete &whiteCaptured;
+//    delete &blackCaptured;
+//    delete &whitePieces;
+//    delete &blackPieces;
 }

@@ -19,7 +19,16 @@ AIController::AIController(bool isWhite, Board *givenGame) {
 
 int AIController::evaluateBlackMaterial(Board* b){
     int materialValue = 0;
-    for(Piece* p : b->blackPieces){
+    vector<Piece*> pieceList = vector<Piece*>();
+
+    for(vector<Piece*> vec : b->board){
+        for(Piece* p : vec){
+            if(p != NULL && !p->isWhite){
+                pieceList.insert(pieceList.begin(), p);
+            }
+        }
+    }
+    for(Piece* p :pieceList){
         materialValue += p->getVal();
     }
     return materialValue;
@@ -28,7 +37,16 @@ int AIController::evaluateBlackMaterial(Board* b){
 
 int AIController::evaluateWhiteMaterial(Board* b) {
     int materialValue = 0;
-    for(Piece* p : b->whitePieces){
+    vector<Piece*> pieceList = vector<Piece*>();
+
+    for(vector<Piece*> vec : b->board){
+        for(Piece* p : vec){
+            if(p != NULL && p->isWhite){
+                pieceList.insert(pieceList.begin(), p);
+            }
+        }
+    }
+    for(Piece* p :pieceList){
         materialValue += p->getVal();
     }
     return materialValue;
@@ -62,6 +80,12 @@ Board* AIController::getBestMove(Board *b) {
 
     for(Board* move : possibleMoves){
         int score = -negaMax(b, DEPTH);
+        move->print();
+        cout << "White Material Value: " << evaluateWhiteMaterial(move) << endl;
+        cout << "Black Material Value: " << evaluateBlackMaterial(move) << endl;
+        //TODO: problem is right here. Score does not match up with board evaluation
+        cout << "Board Eval: " << evaluate(move) << endl;
+        cout << "Score: " << score << endl;
         if(score > maxScore){
             bestBoard = move;
             maxScore = score;
@@ -93,7 +117,9 @@ Board* AIController::getBestMove(Board *b) {
 
 
 // ----------- OLD VERSION THAT WORKS ---------------
+//TODO: make sure this isn't fucking up in the return department
 int AIController::negaMax(Board* b, int depth) {
+    b->print();
     if(depth == 0) return evaluate(b);
     int max = -std::numeric_limits<int>::max();
     for(Board* move : moveGenerator(b)){
@@ -110,32 +136,29 @@ int AIController::negaMax(Board* b, int depth) {
 
 vector<Board*> AIController::moveGenerator(Board* givenGame) {
     vector<Piece*> pieceList;
-    if(givenGame->whitesTurn){
-        pieceList = givenGame->whitePieces;
-    } else {
-        pieceList = givenGame->blackPieces;
+//    if(givenGame->whitesTurn){
+//        pieceList = givenGame->whitePieces;
+//    } else {
+//        pieceList = givenGame->blackPieces;
+//    }
+
+    for(vector<Piece*> vec : givenGame->board){
+        for(Piece* p : vec){
+            if(p != NULL){
+                pieceList.insert(pieceList.begin(), p);
+            }
+        }
     }
     // vector of boards that have made valid moves
     vector<Board*> moveList = vector<Board*>();
     Board* curBoard;
     // so the problem is that curBoard does a shallow copy of it's parameter's board
     vector<Piece*> captured;
-    bool capturedFlag = false;
-    if (givenGame->whitesTurn && !givenGame->whiteCaptured.empty()) {
-        captured = givenGame->whiteCaptured;
-        capturedFlag = true;
-    } else if(!givenGame->whitesTurn && !givenGame->blackCaptured.empty()){
-        captured = givenGame->blackCaptured;
-        capturedFlag = true;
-    }
+
 
     for(Piece* p : pieceList) {
-
-        //TODO: the search below isn't working
-        if ( capturedFlag && std::find(captured.begin(), captured.end(), p) == pieceList.end()) {
-            // the piece is captured. Skip it.
-        } else {
-
+        // check to make sure p is not captured
+        if (!p->isCaptured()) {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
 
@@ -147,6 +170,7 @@ vector<Board*> AIController::moveGenerator(Board* givenGame) {
 
                     int moveStatus = curBoard->move(p->getPos(), checkCoords, true);
                     if (moveStatus == 0) {
+//                        curBoard->print();
                         moveList.insert(moveList.end(), curBoard);
                     }
 

@@ -60,14 +60,29 @@ public:
      */
     virtual int legalMove(vector<int> newCoords, vector<vector<Piece*>> board) = 0;
 
+    /**
+     * Captures a piece
+     */
+    void capture();
+
+    /**
+     * Returns if the piece is captured or not
+     */
+    bool isCaptured();
+
+    /**
+     * Deconstructor
+     */
+
     // represents piece color. true if white
     bool isWhite;
-
 
     // relative value of piece
     int value;
 
 protected:
+    // represents if a piece has been captured
+    bool captured = false;
     // represents x y coords
     vector<int> coords = vector<int>(2);
     // is name of piece. eg 'rook' 'king'

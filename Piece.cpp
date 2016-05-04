@@ -44,4 +44,13 @@ vector<int> Piece::setPos(vector<int> newPos) {
 
 }
 
+void Piece::capture() {
+    captured = true;
+}
+
+bool Piece::isCaptured() {
+    return captured;
+}
+
+
 

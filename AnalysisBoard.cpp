@@ -22,11 +22,11 @@ AnalysisBoard::AnalysisBoard(Board* given) {
     whiteInCheck = given->whiteInCheck;
     whitesTurn = given->whitesTurn;
     //TODO: not going to work. We need to make sure that the pieces in *Pieces and *Captured are the same
-    whiteCaptured = copyPieceVector(given->whiteCaptured);
-    blackCaptured = copyPieceVector(given->blackCaptured);
-    for(int i=0;i<8;i++) {
-        board[i] = vector<Piece*>(8);
-    }
+    whiteCaptured = given->whiteCaptured;
+    blackCaptured = given->blackCaptured;
+//    for(int i=0;i<8;i++) {
+//        board[i] = vector<Piece*>(8);
+//    }
 
 
     // loop through each real game square for a deep copy

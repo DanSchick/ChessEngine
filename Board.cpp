@@ -138,17 +138,20 @@ int Board::move(vector<int> from, vector<int> to, bool verifyOnly) {
             if(captured->isWhite){
                 pieceList = whitePieces;
                 whiteCaptured.insert(whiteCaptured.end(), captured);
+                whiteCount -= 1;
             } else {
                 pieceList = blackPieces;
                 blackCaptured.insert(blackCaptured.end(), captured);
+                blackCount -= 1;
             }
 
-            for(int i=0;i<pieceList.size();i++){
-                if(pieceList[i] == captured){
-                    pieceList.erase(pieceList.begin() + i);
-                }
 
-            }
+//            for(int i=0;i<pieceList.size();i++){
+//                if(pieceList[i] == captured){
+//                    pieceList.erase(pieceList.begin() + i);
+//                }
+//
+//            }
 
             board[to[0]][to[1]] = movePiece;
             board[from[0]][from[1]] = NULL;
@@ -236,6 +239,32 @@ int Board::getIntValFromChar(char c) {
         case 'g': return 6;
         default: return -1;
     }
+}
+
+Piece* Board::getPieceCopy(Piece *curPiece) {
+    switch(curPiece->getID()){
+        case 0:
+            return new Bishop(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+        case 1:
+            return  new King(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+        case 2:
+            return  new Knight(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+        case 3:
+            return  new Pawn(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+        case 4:
+            return  new Queen(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+        case 5:
+            return  new Rook(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+    }
+}
+
+vector<Piece*> Board::copyPieceVector(vector<Piece *> vec) {
+    vector<Piece*> returnVec = vector<Piece*>();
+    for(Piece* p : vec){
+        returnVec.insert(returnVec.end(), getPieceCopy(p));
+    }
+    delete vec;
+    return returnVec;
 }
 
 Board::~Board() {

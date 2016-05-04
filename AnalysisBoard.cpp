@@ -21,8 +21,9 @@ AnalysisBoard::AnalysisBoard(Board* given) {
     blackInCheck = given->blackInCheck;
     whiteInCheck = given->whiteInCheck;
     whitesTurn = given->whitesTurn;
-    whiteCaptured = given->whiteCaptured;
-    blackCaptured = given->blackCaptured;
+    //TODO: not going to work. We need to make sure that the pieces in *Pieces and *Captured are the same
+    whiteCaptured = copyPieceVector(given->whiteCaptured);
+    blackCaptured = copyPieceVector(given->blackCaptured);
     for(int i=0;i<8;i++) {
         board[i] = vector<Piece*>(8);
     }

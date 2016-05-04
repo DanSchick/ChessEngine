@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <algorithm>
 #include <limits>
 #include "AIController.h"
 #include "AnalysisBoard.h"
@@ -37,7 +38,7 @@ int AIController::evaluate(Board* b) {
     // gives a general board evaluation
     // higher the better
     int materialWeight = evaluateBlackMaterial(b) + evaluateWhiteMaterial(b);
-    int numPieceDifference = b->whitePieces.size() - b->blackPieces.size();
+    int numPieceDifference = (16 - b->whiteCaptured.size()) - (16 - b->blackCaptured.size());
     int whoToMove;
     if(b->whitesTurn){
         whoToMove = 1;
@@ -118,22 +119,38 @@ vector<Board*> AIController::moveGenerator(Board* givenGame) {
     vector<Board*> moveList = vector<Board*>();
     Board* curBoard;
     // so the problem is that curBoard does a shallow copy of it's parameter's board
+    vector<Piece*> captured;
+    bool capturedFlag = false;
+    if (givenGame->whitesTurn && !givenGame->whiteCaptured.empty()) {
+        captured = givenGame->whiteCaptured;
+        capturedFlag = true;
+    } else if(!givenGame->whitesTurn && !givenGame->blackCaptured.empty()){
+        captured = givenGame->blackCaptured;
+        capturedFlag = true;
+    }
 
-    for(Piece* p : pieceList){
-        for(int i=0;i<8;i++){
-            for(int j=0;j<8;j++){
+    for(Piece* p : pieceList) {
 
-                curBoard = new AnalysisBoard(givenGame);
-                vector<int> checkCoords = vector<int>(2);
+        //TODO: the search below isn't working
+        if ( capturedFlag && std::find(captured.begin(), captured.end(), p) == pieceList.end()) {
+            // the piece is captured. Skip it.
+        } else {
 
-                checkCoords[0] = i;
-                checkCoords[1] = j;
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
 
-                int moveStatus = curBoard->move(p->getPos(), checkCoords, true);
-                if(moveStatus == 0){
-                    moveList.insert(moveList.end(),curBoard);
+                    curBoard = new AnalysisBoard(givenGame);
+                    vector<int> checkCoords = vector<int>(2);
+
+                    checkCoords[0] = i;
+                    checkCoords[1] = j;
+
+                    int moveStatus = curBoard->move(p->getPos(), checkCoords, true);
+                    if (moveStatus == 0) {
+                        moveList.insert(moveList.end(), curBoard);
+                    }
+
                 }
-
             }
         }
     }

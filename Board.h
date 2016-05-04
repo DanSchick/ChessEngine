@@ -44,6 +44,10 @@ public:
      */
     int getIntValFromChar(char c);
 
+    Piece* getPieceCopy(Piece* orig);
+
+    vector<Piece*> copyPieceVector(vector<Piece*> vec);
+
     ~Board();
 
 
@@ -54,9 +58,8 @@ public:
     vector<Piece*> whitePieces = vector<Piece*>();
     vector<Piece*> blackPieces = vector<Piece*>();
 
-
-
-
+    int whiteCount = 16;
+    int blackCount = 16;
 
     // holds white king and black king. makes checking for checkmate easier
     Piece* whiteKing;

@@ -42,6 +42,7 @@ GameController::GameController(Board *mainGame) {
         }
         if(!game->whitesTurn) {
             cout << "finding next move-------------------------" << endl;
+            Board* oldBoard = game;
             Board* nextMove = AI.getBestMove(game);
             game = nextMove;
             game->print();

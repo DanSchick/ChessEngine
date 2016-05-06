@@ -19,17 +19,13 @@ AIController::AIController(bool isWhite, Board *givenGame) {
 
 int AIController::evaluateBlackMaterial(Board* b){
     int materialValue = 0;
-    vector<Piece*> pieceList = vector<Piece*>();
 
     for(vector<Piece*> vec : b->board){
         for(Piece* p : vec){
             if(p != NULL && !p->isWhite){
-                pieceList.insert(pieceList.begin(), p);
+                materialValue += p->getVal();
             }
         }
-    }
-    for(Piece* p :pieceList){
-        materialValue += p->getVal();
     }
     return materialValue;
 }
@@ -37,17 +33,13 @@ int AIController::evaluateBlackMaterial(Board* b){
 
 int AIController::evaluateWhiteMaterial(Board* b) {
     int materialValue = 0;
-    vector<Piece*> pieceList = vector<Piece*>();
 
     for(vector<Piece*> vec : b->board){
         for(Piece* p : vec){
             if(p != NULL && p->isWhite){
-                pieceList.insert(pieceList.begin(), p);
+                materialValue += p->getVal();
             }
         }
-    }
-    for(Piece* p :pieceList){
-        materialValue += p->getVal();
     }
     return materialValue;
 }
@@ -56,7 +48,21 @@ int AIController::evaluate(Board* b) {
     // gives a general board evaluation
     // higher the better
     int materialWeight = evaluateBlackMaterial(b) + evaluateWhiteMaterial(b);
-    int numPieceDifference = (16 - b->whiteCaptured.size()) - (16 - b->blackCaptured.size());
+
+    vector<Piece*> whitePieceList = vector<Piece*>();
+    vector<Piece*> blackPieceList = vector<Piece*>();
+    int numWhite = 0;
+    int numBlack = 0;
+    for(vector<Piece*> vec : b->board){
+        for(Piece* p : vec){
+            if(p != NULL && p->isWhite){
+                numWhite++;
+            } else if( p!= NULL && !p->isWhite){
+                numBlack++;
+            }
+        }
+    }
+    int numPieceDifference = (numWhite - numBlack);
     int whoToMove;
     if(b->whitesTurn){
         whoToMove = 1;
@@ -64,7 +70,7 @@ int AIController::evaluate(Board* b) {
         whoToMove = -1;
     }
 
-    int result =materialWeight * numPieceDifference * whoToMove;
+    int result = materialWeight * numPieceDifference * whoToMove;
     return result;
 }
 
@@ -75,11 +81,11 @@ Board* AIController::getBestMove(Board *b) {
     Board* bestBoard;
 
     int maxScore = -std::numeric_limits<int>::max();
-    int alpha = -std::numeric_limits<int>::max();
-    int beta = std::numeric_limits<int>::max();
+//    int alpha = -std::numeric_limits<int>::max();
+//    int beta = std::numeric_limits<int>::max();
 
     for(Board* move : possibleMoves){
-        int score = -negaMax(b, DEPTH);
+        int score = -negaMax(move, DEPTH);
         move->print();
         cout << "White Material Value: " << evaluateWhiteMaterial(move) << endl;
         cout << "Black Material Value: " << evaluateBlackMaterial(move) << endl;
@@ -117,10 +123,8 @@ Board* AIController::getBestMove(Board *b) {
 
 
 // ----------- OLD VERSION THAT WORKS ---------------
-//TODO: make sure this isn't fucking up in the return department
 int AIController::negaMax(Board* b, int depth) {
-    b->print();
-    if(depth == 0) return evaluate(b);
+    if(depth == 0) return -1 * evaluate(b);
     int max = -std::numeric_limits<int>::max();
     for(Board* move : moveGenerator(b)){
         Board* c = new AnalysisBoard(move);

@@ -244,36 +244,21 @@ int Board::getIntValFromChar(char c) {
     }
 }
 
-Piece* Board::getPieceCopy(Piece *curPiece) {
-    switch(curPiece->getID()){
-        case 0:
-            return new Bishop(curPiece->isWhite, curPiece->getX(), curPiece->getY());
-        case 1:
-            return  new King(curPiece->isWhite, curPiece->getX(), curPiece->getY());
-        case 2:
-            return  new Knight(curPiece->isWhite, curPiece->getX(), curPiece->getY());
-        case 3:
-            return  new Pawn(curPiece->isWhite, curPiece->getX(), curPiece->getY());
-        case 4:
-            return  new Queen(curPiece->isWhite, curPiece->getX(), curPiece->getY());
-        case 5:
-            return  new Rook(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+//NOT GOING TO WORK
+void Board::delPieceList(vector<Piece*> vec) {
+    for(size_t i=0;i<vec.size();i++){
+        delete vec[i];
     }
-}
-
-vector<Piece*> Board::copyPieceVector(vector<Piece *> vec) {
-    vector<Piece*> returnVec = vector<Piece*>();
-    for(Piece* p : vec){
-        returnVec.insert(returnVec.end(), getPieceCopy(p));
-    }
-    delete &vec;
-    return returnVec;
+    vec.clear();
 }
 
 Board::~Board() {
-//    delete &board;
-//    delete &whiteCaptured;
-//    delete &blackCaptured;
-//    delete &whitePieces;
-//    delete &blackPieces;
+    delPieceList(whiteCaptured);
+    delPieceList(blackCaptured);
+    delPieceList(whitePieces);
+    delPieceList(blackPieces);
+
+    for(vector<Piece*> pVec : board){
+        delPieceList(pVec);
+    }
 }

@@ -3,6 +3,7 @@
 //
 
 #include <vector>
+#include <memory>
 #include "Piece.h"
 
 #ifndef CHESSENGINE_BOARD_H
@@ -44,9 +45,8 @@ public:
      */
     int getIntValFromChar(char c);
 
-    Piece* getPieceCopy(Piece* orig);
+    void delPieceList(vector<Piece*>);
 
-    vector<Piece*> copyPieceVector(vector<Piece*> vec);
 
     ~Board();
 

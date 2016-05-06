@@ -16,6 +16,8 @@ AnalysisBoard::AnalysisBoard(Board* given) {
     blackPieces = given->blackPieces;
     whiteKing = given->whiteKing;
     blackKing = given->blackKing;
+    whiteCount = given->whiteCount;
+    blackCount = given->blackCount;
     blackCheckmated = given->blackCheckmated;
     whiteCheckmated = given->whiteCheckmated;
     blackInCheck = given->blackInCheck;
@@ -59,4 +61,5 @@ AnalysisBoard::AnalysisBoard(Board* given) {
             }
         }
     }
+//    delete given;
 }

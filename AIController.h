@@ -36,7 +36,7 @@ private:
     bool controlWhite;
 
     double maxDepth = 1;
-    int DEPTH = 2;
+    int DEPTH = 1;
 
     Board* game;
 };

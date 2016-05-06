@@ -8,6 +8,8 @@
 #include "AIController.h"
 #include "AnalysisBoard.h"
 
+
+
 AIController::AIController() {
     controlWhite = false;
 }
@@ -124,7 +126,7 @@ Board* AIController::getBestMove(Board *b) {
 
 // ----------- OLD VERSION THAT WORKS ---------------
 int AIController::negaMax(Board* b, int depth) {
-    if(depth == 0) return -1 * evaluate(b);
+    if(depth == 0) return evaluate(b);
     int max = -std::numeric_limits<int>::max();
     for(Board* move : moveGenerator(b)){
         Board* c = new AnalysisBoard(move);

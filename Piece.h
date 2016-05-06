@@ -6,6 +6,8 @@
 #include <iosfwd>
 #include <stdlib.h>
 #include <string>
+#include <memory>
+
 #ifndef CHESSENGINE_PIECE_H
 #define CHESSENGINE_PIECE_H
 
@@ -73,6 +75,7 @@ public:
     /**
      * Deconstructor
      */
+    virtual ~Piece() {}
 
     // represents piece color. true if white
     bool isWhite;

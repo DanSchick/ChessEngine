@@ -34,28 +34,28 @@ AnalysisBoard::AnalysisBoard(Board given) {
     // loop through each real game square for a deep copy
     for(int i=0;i<8;i++){
         for(int j=0;j<8;j++){
-            Piece* curPiece = given.board[i][j];
-            if(curPiece == NULL){
+            Piece curPiece = *given.board[i][j];
+            if(&curPiece == NULL){
                 board[i][j] = NULL;
             } else {
-                switch(curPiece->getID()){
+                switch(curPiece.getID()){
                     case 0:
-                        board[i][j] = new Bishop(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+                        board[i][j] = new Bishop(curPiece.isWhite, curPiece.getX(), curPiece.getY());
                         break;
                     case 1:
-                        board[i][j] = new King(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+                        board[i][j] = new King(curPiece.isWhite, curPiece.getX(), curPiece.getY());
                         break;
                     case 2:
-                        board[i][j] = new Knight(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+                        board[i][j] = new Knight(curPiece.isWhite, curPiece.getX(), curPiece.getY());
                         break;
                     case 3:
-                        board[i][j] = new Pawn(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+                        board[i][j] = new Pawn(curPiece.isWhite, curPiece.getX(), curPiece.getY());
                         break;
                     case 4:
-                        board[i][j] = new Queen(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+                        board[i][j] = new Queen(curPiece.isWhite, curPiece.getX(), curPiece.getY());
                         break;
                     case 5:
-                        board[i][j] = new Rook(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+                        board[i][j] = new Rook(curPiece.isWhite, curPiece.getX(), curPiece.getY());
                         break;
                 }
             }

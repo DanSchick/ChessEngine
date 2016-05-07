@@ -45,7 +45,7 @@ public:
     /**
      * sets the coords array
      */
-    vector<int> setPos(vector<int> newPos);
+    void setPos(vector<int> newPos);
 
     /**
      * returns current x val
@@ -60,7 +60,7 @@ public:
     /**
      * Move piece to given square
      */
-    virtual int legalMove(vector<int> newCoords, vector<vector<Piece*>> board) = 0;
+    int legalMove(vector<int> newCoords, vector<vector<unique_ptr<Piece>>> board) {}
 
     /**
      * Captures a piece
@@ -75,7 +75,7 @@ public:
     /**
      * Deconstructor
      */
-    ~Piece();
+    ~Piece() {}
 
     // represents piece color. true if white
     bool isWhite;

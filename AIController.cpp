@@ -21,8 +21,8 @@ AIController::AIController(bool isWhite, Board givenGame) {
 int AIController::evaluateBlackMaterial(Board b){
     int materialValue = 0;
 
-    for(vector<Piece*> vec : b.board){
-        for(Piece* p : vec){
+    for(vector<unique_ptr<Piece>> vec : b.board){
+        for(auto p : vec){
             if(p != NULL && !p->isWhite){
                 materialValue += p->getVal();
             }
@@ -35,8 +35,8 @@ int AIController::evaluateBlackMaterial(Board b){
 int AIController::evaluateWhiteMaterial(Board b) {
     int materialValue = 0;
 
-    for(vector<Piece*> vec : b.board){
-        for(Piece* p : vec){
+    for(vector<unique_ptr<Piece>> vec : b.board){
+        for(auto p : vec){
             if(p != NULL && p->isWhite){
                 materialValue += p->getVal();
             }
@@ -52,8 +52,8 @@ int AIController::evaluate(Board b) {
 
     int numWhite = 0;
     int numBlack = 0;
-    for(vector<Piece*> vec : b.board){
-        for(Piece* p : vec){
+    for(vector<unique_ptr<Piece>> vec : b.board){
+        for(auto p : vec){
             if(p != NULL && p->isWhite){
                 numWhite++;
             } else if( p!= NULL && !p->isWhite){
@@ -138,15 +138,10 @@ int AIController::negaMax(Board b, int depth) {
 }
 
 vector<Board> AIController::moveGenerator(Board givenGame) {
-    vector<Piece*> pieceList;
-//    if(givenGame->whitesTurn){
-//        pieceList = givenGame->whitePieces;
-//    } else {
-//        pieceList = givenGame->blackPieces;
-//    }
+    vector<unique_ptr<Piece>> pieceList;
 
-    for(vector<Piece*> vec : givenGame.board){
-        for(Piece* p : vec){
+    for(vector<unique_ptr<Piece>> vec : givenGame.board){
+        for(auto p : vec){
             if(p != NULL){
                 pieceList.insert(pieceList.begin(), p);
             }
@@ -157,7 +152,7 @@ vector<Board> AIController::moveGenerator(Board givenGame) {
     Board curBoard;
     // so the problem is that curBoard does a shallow copy of it's parameter's board
 
-    for(Piece* p : pieceList) {
+    for(auto p : pieceList) {
         // check to make sure p is not captured
         if (!p->isCaptured()) {
             for (int i = 0; i < 8; i++) {
@@ -179,5 +174,6 @@ vector<Board> AIController::moveGenerator(Board givenGame) {
             }
         }
     }
+    // now we have to delete pieceList
     return moveList;
 }

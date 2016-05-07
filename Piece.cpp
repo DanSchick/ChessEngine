@@ -39,7 +39,7 @@ vector<int> Piece::getPos() {
     return coords;
 }
 
-vector<int> Piece::setPos(vector<int> newPos) {
+void Piece::setPos(vector<int> newPos) {
     coords = newPos;
 
 }
@@ -52,9 +52,6 @@ bool Piece::isCaptured() {
     return captured;
 }
 
-Piece::~Piece() {
-
-}
 
 
 

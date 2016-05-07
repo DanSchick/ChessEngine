@@ -10,9 +10,9 @@
 
 class GameController {
 public:
-    GameController(Board game);
+    GameController();
 
-    Board game;
+    Board game = Board();
 
 };
 

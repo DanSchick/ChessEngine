@@ -75,7 +75,6 @@ public:
     /**
      * Deconstructor
      */
-    ~Piece();
 
     // represents piece color. true if white
     bool isWhite;

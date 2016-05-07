@@ -18,11 +18,9 @@ public:
      */
     Board();
 
+    Board(const Board &given);
 
-    /**
-     * The Game loop. Handles one method needed to call to start the game
-     */
-//    void start();
+
 
     /**
      * prints out the current game board to cout
@@ -45,18 +43,13 @@ public:
      */
     int getIntValFromChar(char c);
 
-//    void delPieceList(vector<Piece*>);
-//
-//
-//    ~Board();
+    ~Board();
 
 
     /**
      *----------------- VARIABLES ----------------------
      */
 
-    vector<Piece*> whitePieces = vector<Piece*>();
-    vector<Piece*> blackPieces = vector<Piece*>();
 
     int whiteCount = 16;
     int blackCount = 16;

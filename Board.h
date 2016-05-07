@@ -54,9 +54,6 @@ public:
     int whiteCount = 16;
     int blackCount = 16;
 
-    // holds white king and black king. makes checking for checkmate easier
-    Piece* whiteKing;
-    Piece* blackKing;
     // if black is checkmated
     bool blackCheckmated = false;
     // if white is checkmated
@@ -68,10 +65,10 @@ public:
     // true if whites turn
     bool whitesTurn = true;
     // 2D vector of the 8x8 chess board
-    vector<vector<Piece*>> board = vector<vector<Piece*>>(8);
+    vector<vector<Piece>> board = vector<vector<Piece>>(8);
     // list of all captured pieces
-    vector<Piece*> whiteCaptured;
-    vector<Piece*> blackCaptured;
+    vector<Piece> whiteCaptured;
+    vector<Piece> blackCaptured;
 };
 
 

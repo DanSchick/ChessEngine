@@ -21,10 +21,10 @@ AIController::AIController(bool isWhite) {
 int AIController::evaluateBlackMaterial(Board* b) const{
     int materialValue = 0;
 
-    for(vector<Piece*> vec : b->board){
-        for(Piece* p : vec){
-            if(p != NULL && !p->isWhite){
-                materialValue += p->getVal();
+    for(vector<Piece> vec : b->board){
+        for(Piece p : vec){
+            if(&p != NULL && !p.isWhite){
+                materialValue += p.getVal();
             }
         }
     }
@@ -35,10 +35,10 @@ int AIController::evaluateBlackMaterial(Board* b) const{
 int AIController::evaluateWhiteMaterial(Board* b) const{
     int materialValue = 0;
 
-    for(vector<Piece*> vec : b->board){
-        for(Piece* p : vec){
-            if(p != NULL && p->isWhite){
-                materialValue += p->getVal();
+    for(vector<Piece> vec : b->board){
+        for(Piece p : vec){
+            if(&p != NULL && p.isWhite){
+                materialValue += p.getVal();
             }
         }
     }
@@ -52,11 +52,11 @@ int AIController::evaluate(Board* b) const{
 
     int numWhite = 0;
     int numBlack = 0;
-    for(vector<Piece*> vec : b->board){
-        for(Piece* p : vec){
-            if(p != NULL && p->isWhite){
+    for(vector<Piece> vec : b->board){
+        for(Piece p : vec){
+            if(&p != NULL && p.isWhite){
                 numWhite++;
-            } else if( p!= NULL && !p->isWhite){
+            } else if(&p != NULL && !p.isWhite){
                 numBlack++;
             }
         }
@@ -138,16 +138,16 @@ int AIController::negaMax(Board* b, int depth) {
 }
 
 vector<Board> AIController::moveGenerator(Board* givenGame) {
-    vector<Piece *> pieceList;
+    vector<Piece> pieceList;
 //    if(givenGame->whitesTurn){
 //        pieceList = givenGame->whitePieces;
 //    } else {
 //        pieceList = givenGame->blackPieces;
 //    }
 
-    for (vector<Piece *> vec : givenGame->board) {
-        for (Piece *p : vec) {
-            if (p != NULL && p->isWhite == givenGame->whitesTurn) {
+    for (vector<Piece> vec : givenGame->board) {
+        for (Piece p : vec) {
+            if (&p != NULL && p.isWhite == givenGame->whitesTurn) {
                 pieceList.insert(pieceList.begin(), p);
             }
         }
@@ -156,10 +156,10 @@ vector<Board> AIController::moveGenerator(Board* givenGame) {
     vector<Board> moveList = vector<Board>();
     // so the problem is that curBoard does a shallow copy of it's parameter's board
 
-    for (Piece *p : pieceList) {
+    for (Piece p : pieceList) {
         // check to make sure p is not captured
-        if (!p->isCaptured()) {
-            vector<int> piecePos = p->getPos();
+        if (!p.isCaptured()) {
+            vector<int> piecePos = p.getPos();
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
 

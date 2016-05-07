@@ -8,8 +8,6 @@
 
 GameController::GameController() {
     // get black and white king
-    game.whiteKing = game.board[4][0];
-    game.blackKing = game.board[4][7];
 
     string moveInput;
     AIController AI = AIController(false);

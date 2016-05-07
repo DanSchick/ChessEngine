@@ -19,7 +19,7 @@ public:
     /**
      * default constructor
      */
-    Piece(bool white, int x, int y);
+    Piece(int ID, bool white, int x, int y);
 
     /**
      * gives the name of the piece back
@@ -60,7 +60,7 @@ public:
     /**
      * Move piece to given square
      */
-    virtual int legalMove(vector<int> newCoords, vector<vector<Piece*>> board) = 0;
+    int legalMove(vector<int> newCoords, vector<vector<Piece>> board);
 
     /**
      * Captures a piece
@@ -83,6 +83,8 @@ public:
     int value;
 
 protected:
+    // if a pawn can leap
+    bool leap = false;
     // represents if a piece has been captured
     bool captured = false;
     // represents x y coords

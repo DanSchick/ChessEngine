@@ -3,18 +3,9 @@
 //
 
 #include "AnalysisBoard.h"
-#include "pieces/Rook.h"
-#include "pieces/Bishop.h"
-#include "pieces/King.h"
-#include "pieces/Knight.h"
-#include "pieces/Pawn.h"
-#include "pieces/Queen.h"
-#include "Piece.h"
 
 
 AnalysisBoard::AnalysisBoard(Board* given) {
-    whiteKing = given->whiteKing;
-    blackKing = given->blackKing;
     whiteCount = given->whiteCount;
     blackCount = given->blackCount;
     blackCheckmated = given->blackCheckmated;

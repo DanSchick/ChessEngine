@@ -45,10 +45,10 @@ public:
      */
     int getIntValFromChar(char c);
 
-    void delPieceList(vector<Piece*>);
-
-
-    ~Board();
+//    void delPieceList(vector<Piece*>);
+//
+//
+//    ~Board();
 
 
     /**

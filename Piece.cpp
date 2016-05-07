@@ -52,5 +52,9 @@ bool Piece::isCaptured() {
     return captured;
 }
 
+Piece::~Piece() {
+
+}
+
 
 

@@ -8,7 +8,7 @@ using namespace std;
 
 int main() {
 
-    Board* gameBoard = new Board();
+    Board gameBoard = Board();
     GameController game = GameController(gameBoard);
 
 

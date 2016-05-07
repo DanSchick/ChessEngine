@@ -10,7 +10,7 @@
 
 class AnalysisBoard: public Board{
 public:
-    AnalysisBoard(Board* given);
+    AnalysisBoard(Board given);
 
 };
 

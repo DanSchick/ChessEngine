@@ -14,22 +14,22 @@ public:
     // but will have no board stored
     AIController();
 
-    AIController(bool isWhite, Board *givenBoard);
+    AIController(bool isWhite, Board givenBoard);
 
-    int evaluateBlackMaterial(Board* b);
+    int evaluateBlackMaterial(Board b);
 
-    int evaluateWhiteMaterial(Board* b);
+    int evaluateWhiteMaterial(Board b);
 
-    int evaluate(Board* b);
+    int evaluate(Board b);
 
-    Board* getBestMove(Board* b);
+    Board getBestMove(Board b);
 
 //    double negaMax(Board* b, double depth, double alpha, double beta);
 
-    int negaMax(Board* b, int depth);
+    int negaMax(Board b, int depth);
 
 
-    vector<Board*> moveGenerator(Board* givenGame);
+    vector<Board> moveGenerator(Board givenGame);
 
 
 private:
@@ -38,7 +38,6 @@ private:
     double maxDepth = 1;
     int DEPTH = 1;
 
-    Board* game;
 };
 
 

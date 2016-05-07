@@ -245,20 +245,20 @@ int Board::getIntValFromChar(char c) {
 }
 
 //NOT GOING TO WORK
-void Board::delPieceList(vector<Piece*> vec) {
-    for(size_t i=0;i<vec.size();i++){
-        delete vec[i];
-    }
-    vec.clear();
-}
-
-Board::~Board() {
-    delPieceList(whiteCaptured);
-    delPieceList(blackCaptured);
-    delPieceList(whitePieces);
-    delPieceList(blackPieces);
-
-    for(vector<Piece*> pVec : board){
-        delPieceList(pVec);
-    }
-}
+//void Board::delPieceList(vector<Piece*> vec) {
+//    for(size_t i=0;i<vec.size();i++){
+//        delete vec[i];
+//    }
+//    vec.clear();
+//}
+//
+//Board::~Board() {
+//    delPieceList(whiteCaptured);
+//    delPieceList(blackCaptured);
+//    delPieceList(whitePieces);
+//    delPieceList(blackPieces);
+//
+//    for(vector<Piece*> pVec : board){
+//        delPieceList(pVec);
+//    }
+//}

@@ -75,7 +75,7 @@ public:
     /**
      * Deconstructor
      */
-    virtual ~Piece() {}
+    ~Piece();
 
     // represents piece color. true if white
     bool isWhite;

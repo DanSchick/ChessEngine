@@ -43,6 +43,8 @@ public:
      */
     int getIntValFromChar(char c);
 
+    Piece* getPieceCopy(Piece* curPiece);
+
     ~Board();
 
 
@@ -55,8 +57,6 @@ public:
     int blackCount = 16;
 
     // holds white king and black king. makes checking for checkmate easier
-    Piece* whiteKing;
-    Piece* blackKing;
     // if black is checkmated
     bool blackCheckmated = false;
     // if white is checkmated

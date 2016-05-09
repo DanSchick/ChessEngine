@@ -6,7 +6,6 @@
 #include <algorithm>
 #include <limits>
 #include "AIController.h"
-#include "AnalysisBoard.h"
 
 
 
@@ -126,7 +125,7 @@ int AIController::negaMax(Board* b, int depth) {
     int max = -std::numeric_limits<int>::max();
     vector<Board> allMoves = moveGenerator(b);
     for(Board move : allMoves){
-        Board c = AnalysisBoard(&move);
+        Board c = Board(move);
         int score = -negaMax(&c, depth -1);
         if(score > max){
             max = score;
@@ -153,7 +152,7 @@ vector<Board> AIController::moveGenerator(Board* givenGame) {
         }
     }
     // vector of boards that have made valid moves
-    vector<Board> moveList = vector<Board>();
+    vector<Board> moveList = vector<Board>(1000);
     // so the problem is that curBoard does a shallow copy of it's parameter's board
 
     for (Piece *p : pieceList) {

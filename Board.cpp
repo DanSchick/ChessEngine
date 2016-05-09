@@ -51,20 +51,22 @@ Board::Board() {
 }
 
 Board::Board(const Board &given) {
-    whiteKing = given.whiteKing;
-    blackKing = given.blackKing;
     blackCheckmated = given.blackCheckmated;
     whiteCheckmated = given.whiteCheckmated;
     blackInCheck = given.blackInCheck;
     whiteInCheck = given.whiteInCheck;
     whitesTurn = given.whitesTurn;
-    whiteCaptured = given.whiteCaptured;
-    blackCaptured = given.blackCaptured;
+
+    for(Piece* p : given.whiteCaptured){
+        whiteCaptured.insert(whiteCaptured.end(),getPieceCopy(p));
+    }
+    for(Piece* p : given.blackCaptured){
+        blackCaptured.insert(blackCaptured.end(),getPieceCopy(p));
+    }
+
     for(int i=0;i<8;i++) {
         board[i] = vector<Piece*>(8);
     }
-
-
     // loop through each real game square for a deep copy
     for(int i=0;i<8;i++){
         for(int j=0;j<8;j++){
@@ -72,26 +74,7 @@ Board::Board(const Board &given) {
             if(curPiece == NULL){
                 board[i][j] = NULL;
             } else {
-                switch(curPiece->getID()){
-                    case 0:
-                        board[i][j] = new Bishop(curPiece->isWhite, curPiece->getX(), curPiece->getY());
-                        break;
-                    case 1:
-                        board[i][j] = new King(curPiece->isWhite, curPiece->getX(), curPiece->getY());
-                        break;
-                    case 2:
-                        board[i][j] = new Knight(curPiece->isWhite, curPiece->getX(), curPiece->getY());
-                        break;
-                    case 3:
-                        board[i][j] = new Pawn(curPiece->isWhite, curPiece->getX(), curPiece->getY());
-                        break;
-                    case 4:
-                        board[i][j] = new Queen(curPiece->isWhite, curPiece->getX(), curPiece->getY());
-                        break;
-                    case 5:
-                        board[i][j] = new Rook(curPiece->isWhite, curPiece->getX(), curPiece->getY());
-                        break;
-                }
+                board[i][j] = getPieceCopy(curPiece);
             }
         }
     }
@@ -262,6 +245,49 @@ int Board::getIntValFromChar(char c) {
         case 'g': return 6;
         case 'h': return 7;
         default: return -1;
+    }
+}
+
+Piece* Board::getPieceCopy(Piece* curPiece) {
+
+    Piece* returnPiece;
+    switch(curPiece->getID()){
+        case 0:
+            returnPiece = new Bishop(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+            if(curPiece->isCaptured()){
+                returnPiece->capture();
+            }
+            return returnPiece;
+        case 1:
+            returnPiece = new King(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+            if(curPiece->isCaptured()){
+                returnPiece->capture();
+            }
+            return returnPiece;
+        case 2:
+            returnPiece = new Knight(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+            if(curPiece->isCaptured()){
+                returnPiece->capture();
+            }
+            return returnPiece;
+        case 3:
+            returnPiece = new Pawn(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+            if(curPiece->isCaptured()){
+                returnPiece->capture();
+            }
+            return returnPiece;
+        case 4:
+            returnPiece = new Queen(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+            if(curPiece->isCaptured()){
+                returnPiece->capture();
+            }
+            return returnPiece;
+        case 5:
+            returnPiece = new Rook(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+            if(curPiece->isCaptured()){
+                returnPiece->capture();
+            }
+            return returnPiece;
     }
 }
 

@@ -8,10 +8,19 @@
 
 #include "Board.h"
 
+/**
+ * A board that the AI uses to determine the best move to make
+ */
 class AnalysisBoard: public Board{
 public:
+    /**
+     * Constructs a deep copy of the given board
+     */
     AnalysisBoard(Board* given);
 
+    /**
+     * Destructor. Deletes the pieces and all other members
+     */
     ~AnalysisBoard();
 
 };

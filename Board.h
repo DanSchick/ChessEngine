@@ -17,12 +17,6 @@ public:
      */
     Board();
 
-
-    /**
-     * The Game loop. Handles one method needed to call to start the game
-     */
-//    void start();
-
     /**
      * prints out the current game board to cout
      */
@@ -30,24 +24,32 @@ public:
 
     /**
      * checks a move and executes if possible
+     * @param from: vector indicating coordinates of the peice to move
+     * @param to: vector indicating the coordinates to check
+     * @param verifyOnly: won't make the move if true. Will just see if valid
+     * @return: code indicating success. A 0 is a success, anything else is fail
      */
     int move(vector<int> from, vector<int> to, bool verifyOnly);
 
     /**
      * take input from user for a move
+     * @param input: the move to make in form e2-e4 or d1-d5, etc
+     * @return: code indicating success. 0 means success
      */
     int inputMove(string input);
 
     /**
      * returns the chess board value from the chess notation
      * ie, a2 becomes 0,2
+     * @param c: the letter indicating x coordinate
+     * @reutrn: the int value of that coordinate
      */
     int getIntValFromChar(char c);
 
-    Piece* getPieceCopy(Piece* orig);
 
-    vector<Piece*> copyPieceVector(vector<Piece*> vec);
-
+    /**
+     * Destructor
+     */
     virtual ~Board();
 
 
@@ -55,7 +57,9 @@ public:
      *----------------- VARIABLES ----------------------
      */
 
+    // number of white pieces
     int whiteCount = 16;
+    // number of black pieces
     int blackCount = 16;
 
     // holds white king and black king. makes checking for checkmate easier

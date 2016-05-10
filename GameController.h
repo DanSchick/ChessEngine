@@ -8,13 +8,23 @@
 
 #include "Board.h"
 
+/**
+ *Controls the game.
+ */
 class GameController {
 public:
+    /**
+     * Runs the game in a while loop
+     * @param game: starting board
+     * @param twoPlayer: how many players in the game
+     */
     GameController(Board* game, bool twoPlayer);
 
-    Board* game;
 
 private:
+    // represents the current game board. If playing vs AI, this board will change
+    Board* game;
+    // represents who's turn it is
     bool whitesTurn = true;
 
 };

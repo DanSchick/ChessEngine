@@ -11,7 +11,6 @@
 #include "pieces/Queen.h"
 #include "pieces/King.h"
 #include "pieces/Pawn.h"
-#include "AIController.h"
 
 Board::Board() {
     // populate with the 2nd dimension vector
@@ -220,31 +219,6 @@ int Board::getIntValFromChar(char c) {
     }
 }
 
-Piece* Board::getPieceCopy(Piece *curPiece) {
-    switch(curPiece->getID()){
-        case 0:
-            return new Bishop(curPiece->isWhite, curPiece->getX(), curPiece->getY());
-        case 1:
-            return  new King(curPiece->isWhite, curPiece->getX(), curPiece->getY());
-        case 2:
-            return  new Knight(curPiece->isWhite, curPiece->getX(), curPiece->getY());
-        case 3:
-            return  new Pawn(curPiece->isWhite, curPiece->getX(), curPiece->getY());
-        case 4:
-            return  new Queen(curPiece->isWhite, curPiece->getX(), curPiece->getY());
-        case 5:
-            return  new Rook(curPiece->isWhite, curPiece->getX(), curPiece->getY());
-    }
-}
-
-vector<Piece*> Board::copyPieceVector(vector<Piece *> vec) {
-    vector<Piece*> returnVec = vector<Piece*>();
-    for(Piece* p : vec){
-        returnVec.insert(returnVec.end(), getPieceCopy(p));
-    }
-    delete &vec;
-    return returnVec;
-}
 
 Board::~Board() {
     for(int i = 0;i < board.size(); ++i){

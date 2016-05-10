@@ -14,22 +14,25 @@ GameController::GameController(Board *mainGame, bool twoPlayer) {
 
     if(!twoPlayer) {
         string moveInput;
-        AIController AI = AIController(false, game);
+        AIController AI = AIController(game);
         int status;
         game->print();
+        bool errors = false;
         while (true) {
             if (game->blackCheckmated || game->whiteCheckmated) {
                 break;
             }
 
-            if (whitesTurn) {
-                cout << "\n-----------\nWhite's Turn" << endl;
-            } else {
-                cout << "\n-----------\nBlack's Turn" << endl;
+            if(!errors) {
+                if (whitesTurn) {
+                    cout << "\n-----------\nWhite's Turn" << endl;
+                } else {
+                    cout << "\n-----------\nBlack's Turn" << endl;
+                }
+                cout << "White Material Value: " << AI.evaluateWhiteMaterial(game) << endl;
+                cout << "Black Material Value: " << AI.evaluateBlackMaterial(game) << endl;
+                cout << "Board Eval: " << AI.evaluate(game) << endl;
             }
-            cout << "White Material Value: " << AI.evaluateWhiteMaterial(game) << endl;
-            cout << "Black Material Value: " << AI.evaluateBlackMaterial(game) << endl;
-            cout << "Board Eval: " << AI.evaluate(game) << endl;
             cout << "Enter your move: " << endl;
 
             cin >> moveInput;
@@ -40,8 +43,10 @@ GameController::GameController(Board *mainGame, bool twoPlayer) {
                 game->print();
             } else {
                 cout << "ERROR" << endl;
+                errors = true;
             }
             if (!whitesTurn) {
+                errors = false;
                 cout << "finding next move-------------------------" << endl;
                 Board *nextMove = AI.getBestMove(game);
                 game = nextMove;
@@ -56,11 +61,14 @@ GameController::GameController(Board *mainGame, bool twoPlayer) {
         string moveInput;
         int status;
         game->print();
+        bool errors = false;
         while(true){
-            if(whitesTurn){
-                cout << "\n-----------------------\nWhite's turn" << endl;
-            } else {
-                cout << "\n-----------------------\nBlack's turn" << endl;
+            if(!errors) {
+                if (whitesTurn) {
+                    cout << "\n-----------------------\nWhite's turn" << endl;
+                } else {
+                    cout << "\n-----------------------\nBlack's turn" << endl;
+                }
             }
             cout << "Enter your move (in form e2-e4): " << endl;
 
@@ -70,10 +78,12 @@ GameController::GameController(Board *mainGame, bool twoPlayer) {
             }
             status = game->inputMove(moveInput);
             if(status == 0){
+                errors = false;
                 game->print();
                 // move was made, flip to other player's turn
                 whitesTurn = !whitesTurn;
             } else {
+                errors = true;
                 cout << "ERROR" << endl;
             }
         }

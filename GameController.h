@@ -10,7 +10,7 @@
 
 class GameController {
 public:
-    GameController(Board* game);
+    GameController(Board* game, bool twoPlayer);
 
     Board* game;
 

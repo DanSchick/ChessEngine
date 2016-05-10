@@ -8,20 +8,19 @@
 #include "AIController.h"
 #include "AnalysisBoard.h"
 
-
-
 AIController::AIController() {
     controlWhite = false;
 }
 
-AIController::AIController(bool isWhite, Board givenGame) {
+AIController::AIController(bool isWhite, Board *givenGame) {
     controlWhite = isWhite;
+    game = givenGame;
 }
 
-int AIController::evaluateBlackMaterial(Board b){
+int AIController::evaluateBlackMaterial(Board* b){
     int materialValue = 0;
 
-    for(vector<Piece*> vec : b.board){
+    for(vector<Piece*> vec : b->board){
         for(Piece* p : vec){
             if(p != NULL && !p->isWhite){
                 materialValue += p->getVal();
@@ -32,10 +31,10 @@ int AIController::evaluateBlackMaterial(Board b){
 }
 
 
-int AIController::evaluateWhiteMaterial(Board b) {
+int AIController::evaluateWhiteMaterial(Board* b) {
     int materialValue = 0;
 
-    for(vector<Piece*> vec : b.board){
+    for(vector<Piece*> vec : b->board){
         for(Piece* p : vec){
             if(p != NULL && p->isWhite){
                 materialValue += p->getVal();
@@ -45,14 +44,14 @@ int AIController::evaluateWhiteMaterial(Board b) {
     return materialValue;
 }
 
-int AIController::evaluate(Board b) {
+int AIController::evaluate(Board* b) {
     // gives a general board evaluation
     // higher the better
     int materialWeight = evaluateBlackMaterial(b) + evaluateWhiteMaterial(b);
 
     int numWhite = 0;
     int numBlack = 0;
-    for(vector<Piece*> vec : b.board){
+    for(vector<Piece*> vec : b->board){
         for(Piece* p : vec){
             if(p != NULL && p->isWhite){
                 numWhite++;
@@ -63,7 +62,7 @@ int AIController::evaluate(Board b) {
     }
     int numPieceDifference = (numWhite - numBlack);
     int whoToMove;
-    if(b.whitesTurn){
+    if(b->whitesTurn){
         whoToMove = 1;
     } else {
         whoToMove = -1;
@@ -73,27 +72,33 @@ int AIController::evaluate(Board b) {
     return result;
 }
 
-Board AIController::getBestMove(Board b) {
+Board* AIController::getBestMove(Board *b) {
 
-    vector<Board> possibleMoves = moveGenerator(b);
-    vector<vector<Piece*>> bestMove = vector<vector<Piece*>>();
-    Board bestBoard;
+    vector<Board*> possibleMoves = moveGenerator(b);
+    Board* bestBoard;
 
+    // set max initially to negative infinity so any move is better
     int maxScore = -std::numeric_limits<int>::max();
-//    int alpha = -std::numeric_limits<int>::max();
-//    int beta = std::numeric_limits<int>::max();
 
-    for(Board move : possibleMoves){
+    for(int i = 0; i < possibleMoves.size(); ++i){
+        Board* move = possibleMoves[i];
         int score = -negaMax(move, DEPTH);
-        move.print();
+        move->print();
         cout << "White Material Value: " << evaluateWhiteMaterial(move) << endl;
         cout << "Black Material Value: " << evaluateBlackMaterial(move) << endl;
-        //TODO: problem is right here. Score does not match up with board evaluation
         cout << "Board Eval: " << evaluate(move) << endl;
         cout << "Score: " << score << endl;
         if(score > maxScore){
             bestBoard = move;
             maxScore = score;
+        }
+        if(i == possibleMoves.size() -1) {
+            for (Board *delBoard : possibleMoves) {
+                if (delBoard != bestBoard) {
+                    delete delBoard;
+                }
+            }
+            possibleMoves.clear();
         }
     }
     return bestBoard;
@@ -122,14 +127,23 @@ Board AIController::getBestMove(Board b) {
 
 
 // ----------- OLD VERSION THAT WORKS ---------------
-int AIController::negaMax(Board b, int depth) {
-    if(depth == 0) return evaluate(b);
+int AIController::negaMax(Board* b, int depth) {
+    if(depth == 0){
+        return evaluate(b);
+    }
     int max = -std::numeric_limits<int>::max();
-    for(Board move : moveGenerator(b)){
-        Board c = AnalysisBoard(move);
-        int score = -negaMax(c, depth -1);
+    vector<Board*> possibleMoves = moveGenerator(b);
+    for(int i = 0; i < possibleMoves.size(); ++i){
+        Board* move = possibleMoves[i];
+        int score = -negaMax(move, depth -1);
         if(score > max){
             max = score;
+        }
+        if(i == possibleMoves.size() -1) {
+            for (Board *delBoard : possibleMoves) {
+                delete delBoard;
+            }
+            possibleMoves.clear();
         }
     }
     return max;
@@ -137,7 +151,7 @@ int AIController::negaMax(Board b, int depth) {
 
 }
 
-vector<Board> AIController::moveGenerator(Board givenGame) {
+vector<Board*> AIController::moveGenerator(Board* givenGame) {
     vector<Piece*> pieceList;
 //    if(givenGame->whitesTurn){
 //        pieceList = givenGame->whitePieces;
@@ -145,7 +159,7 @@ vector<Board> AIController::moveGenerator(Board givenGame) {
 //        pieceList = givenGame->blackPieces;
 //    }
 
-    for(vector<Piece*> vec : givenGame.board){
+    for(vector<Piece*> vec : givenGame->board){
         for(Piece* p : vec){
             if(p != NULL){
                 pieceList.insert(pieceList.begin(), p);
@@ -153,9 +167,11 @@ vector<Board> AIController::moveGenerator(Board givenGame) {
         }
     }
     // vector of boards that have made valid moves
-    vector<Board> moveList = vector<Board>();
-    Board curBoard;
+    vector<Board*> moveList = vector<Board*>();
+    Board* curBoard;
     // so the problem is that curBoard does a shallow copy of it's parameter's board
+    vector<Piece*> captured;
+
 
     for(Piece* p : pieceList) {
         // check to make sure p is not captured
@@ -163,16 +179,18 @@ vector<Board> AIController::moveGenerator(Board givenGame) {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
 
-                    curBoard = AnalysisBoard(givenGame);
+                    curBoard = new AnalysisBoard(givenGame);
                     vector<int> checkCoords = vector<int>(2);
 
                     checkCoords[0] = i;
                     checkCoords[1] = j;
 
-                    int moveStatus = curBoard.move(p->getPos(), checkCoords, true);
+                    int moveStatus = curBoard->move(p->getPos(), checkCoords, true);
                     if (moveStatus == 0) {
 //                        curBoard->print();
-                        moveList.insert(moveList.end(), curBoard);
+                        moveList.push_back(curBoard);
+                    } else {
+                        delete curBoard;
                     }
 
                 }

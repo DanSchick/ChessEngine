@@ -20,52 +20,34 @@ Board::Board() {
     }
     /** ------------ FIRST ROW -------------- */
     board[0][0] = new Rook(true, 0, 0);
-    whitePieces.insert(whitePieces.end(),board[0][0]);
     board[1][0] = new Knight(true, 1, 0);
-    whitePieces.insert(whitePieces.end(),board[1][0]);
     board[2][0] = new Bishop(true, 2, 0);
-    whitePieces.insert(whitePieces.end(),board[2][0]);
     board[3][0] = new Queen(true, 3, 0);
-    whitePieces.insert(whitePieces.end(),board[3][0]);
     board[4][0] = new King(true, 4, 0);
-    whitePieces.insert(whitePieces.end(),board[4][0]);
     board[5][0] = new Bishop(true, 5, 0);
-    whitePieces.insert(whitePieces.end(),board[5][0]);
     board[6][0] = new Knight(true, 6, 0);
-    whitePieces.insert(whitePieces.end(),board[6][0]);
     board[7][0] = new Rook(true, 7, 0);
-    whitePieces.insert(whitePieces.end(),board[7][0]);
 
     /** ------------ SECOND ROW -------------- */
     for(int i=0;i<8;i++){
         board[i][1] = new Pawn(true, i, 1);
-        whitePieces.insert(whitePieces.end(),board[i][1]);
     }
 
 
     /** ------------ SIXTH ROW -------------- */
     for(int i=0;i<8;i++){
         board[i][6] = new Pawn(false, i, 6);
-        blackPieces.insert(blackPieces.end(),board[i][6]);
     }
 
     /** ------------ SEVENTH ROW -------------- */
     board[0][7] = new Rook(false, 0, 7);
-    blackPieces.insert(blackPieces.end(),board[0][7]);
     board[1][7] = new Knight(false, 1, 7);
-    blackPieces.insert(blackPieces.end(),board[1][7]);
     board[2][7] = new Bishop(false, 2, 7);
-    blackPieces.insert(blackPieces.end(),board[2][7]);
     board[3][7] = new Queen(false, 3, 7);
-    blackPieces.insert(blackPieces.end(), board[3][7]);
     board[4][7] = new King(false, 4, 7);
-    blackPieces.insert(blackPieces.end(),board[4][7]);
     board[5][7] = new Bishop(false, 5, 7);
-    blackPieces.insert(blackPieces.end(),board[5][7]);
     board[6][7] = new Knight(false, 6, 7);
-    blackPieces.insert(blackPieces.end(),board[6][7]);
     board[7][7] = new Rook(false, 7, 7);
-    blackPieces.insert(blackPieces.end(),board[7][7]);
 }
 
 
@@ -87,11 +69,6 @@ void Board::print() {
     cout << "   A B C D E F G H " << endl;
 
     if(!whiteCaptured.empty()){
-        cout << "W: ";
-        for(Piece* p : whitePieces){
-            cout << p->getName() << " ";
-        }
-        cout << endl;
         cout << "Captured White Pieces: ";
         for(Piece* p : whiteCaptured){
             cout << p->getName();
@@ -131,17 +108,16 @@ int Board::move(vector<int> from, vector<int> to, bool verifyOnly) {
         // we move the piece
         // check if there's a capture
         movePiece->setPos(to);
+        whitesTurn = !whitesTurn;
         if(board[to[0]][to[1]] != NULL && movePiece->isWhite != board[to[0]][to[1]]->isWhite){
             Piece* captured = board[to[0]][to[1]];
             // there's a capture
             vector<Piece*> pieceList;
             if(captured->isWhite){
-                pieceList = whitePieces;
                 whiteCaptured.insert(whiteCaptured.end(), captured);
                 captured->capture();
                 whiteCount -= 1;
             } else {
-                pieceList = blackPieces;
                 blackCaptured.insert(blackCaptured.end(), captured);
                 captured->capture();
                 blackCount -= 1;
@@ -244,21 +220,38 @@ int Board::getIntValFromChar(char c) {
     }
 }
 
-//NOT GOING TO WORK
-//void Board::delPieceList(vector<Piece*> vec) {
-//    for(size_t i=0;i<vec.size();i++){
-//        delete vec[i];
-//    }
-//    vec.clear();
-//}
-//
-//Board::~Board() {
-//    delPieceList(whiteCaptured);
-//    delPieceList(blackCaptured);
-//    delPieceList(whitePieces);
-//    delPieceList(blackPieces);
-//
-//    for(vector<Piece*> pVec : board){
-//        delPieceList(pVec);
-//    }
-//}
+Piece* Board::getPieceCopy(Piece *curPiece) {
+    switch(curPiece->getID()){
+        case 0:
+            return new Bishop(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+        case 1:
+            return  new King(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+        case 2:
+            return  new Knight(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+        case 3:
+            return  new Pawn(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+        case 4:
+            return  new Queen(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+        case 5:
+            return  new Rook(curPiece->isWhite, curPiece->getX(), curPiece->getY());
+    }
+}
+
+vector<Piece*> Board::copyPieceVector(vector<Piece *> vec) {
+    vector<Piece*> returnVec = vector<Piece*>();
+    for(Piece* p : vec){
+        returnVec.insert(returnVec.end(), getPieceCopy(p));
+    }
+    delete &vec;
+    return returnVec;
+}
+
+Board::~Board() {
+    for(int i = 0;i < board.size(); ++i){
+        for(int j = 0; j < board[i].size(); ++j){
+            delete board[i][j];
+        }
+        board[i].clear();
+    }
+    board.clear();
+}

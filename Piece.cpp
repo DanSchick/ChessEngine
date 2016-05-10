@@ -2,6 +2,7 @@
 // Created by Danny on 4/19/2016.
 //
 
+#include <iostream>
 #include "Piece.h"
 
 Piece::Piece() {}
@@ -39,9 +40,8 @@ vector<int> Piece::getPos() {
     return coords;
 }
 
-vector<int> Piece::setPos(vector<int> newPos) {
+void Piece::setPos(vector<int> newPos) {
     coords = newPos;
-
 }
 
 void Piece::capture() {
@@ -53,7 +53,6 @@ bool Piece::isCaptured() {
 }
 
 Piece::~Piece() {
-
 }
 
 

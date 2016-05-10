@@ -6,8 +6,6 @@
 #include <iosfwd>
 #include <stdlib.h>
 #include <string>
-#include <memory>
-
 #ifndef CHESSENGINE_PIECE_H
 #define CHESSENGINE_PIECE_H
 
@@ -45,7 +43,7 @@ public:
     /**
      * sets the coords array
      */
-    vector<int> setPos(vector<int> newPos);
+    void setPos(vector<int> newPos);
 
     /**
      * returns current x val

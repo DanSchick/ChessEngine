@@ -11,21 +11,17 @@
 #include "pieces/Queen.h"
 
 
-AnalysisBoard::AnalysisBoard(Board given) {
-    whitePieces = given.whitePieces;
-    blackPieces = given.blackPieces;
-    whiteKing = given.whiteKing;
-    blackKing = given.blackKing;
-    whiteCount = given.whiteCount;
-    blackCount = given.blackCount;
-    blackCheckmated = given.blackCheckmated;
-    whiteCheckmated = given.whiteCheckmated;
-    blackInCheck = given.blackInCheck;
-    whiteInCheck = given.whiteInCheck;
-    whitesTurn = given.whitesTurn;
+AnalysisBoard::AnalysisBoard(Board* given) {
+    whiteKing = given->whiteKing;
+    blackKing = given->blackKing;
+    blackCheckmated = given->blackCheckmated;
+    whiteCheckmated = given->whiteCheckmated;
+    blackInCheck = given->blackInCheck;
+    whiteInCheck = given->whiteInCheck;
+    whitesTurn = given->whitesTurn;
     //TODO: not going to work. We need to make sure that the pieces in *Pieces and *Captured are the same
-    whiteCaptured = given.whiteCaptured;
-    blackCaptured = given.blackCaptured;
+    whiteCaptured = given->whiteCaptured;
+    blackCaptured = given->blackCaptured;
 //    for(int i=0;i<8;i++) {
 //        board[i] = vector<Piece*>(8);
 //    }
@@ -34,7 +30,7 @@ AnalysisBoard::AnalysisBoard(Board given) {
     // loop through each real game square for a deep copy
     for(int i=0;i<8;i++){
         for(int j=0;j<8;j++){
-            Piece* curPiece = given.board[i][j];
+            Piece* curPiece = given->board[i][j];
             if(curPiece == NULL){
                 board[i][j] = NULL;
             } else {
@@ -61,5 +57,15 @@ AnalysisBoard::AnalysisBoard(Board given) {
             }
         }
     }
-//    delete given;
+}
+
+AnalysisBoard::~AnalysisBoard() {
+    for(int i = 0;i < board.size(); ++i){
+        for(int j = 0; j < board[i].size(); ++j){
+            delete board[i][j];
+        }
+        board[i].clear();
+    }
+    board.clear();
+
 }

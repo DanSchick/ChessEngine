@@ -3,7 +3,6 @@
 //
 
 #include <vector>
-#include <memory>
 #include "Piece.h"
 
 #ifndef CHESSENGINE_BOARD_H
@@ -45,18 +44,16 @@ public:
      */
     int getIntValFromChar(char c);
 
-//    void delPieceList(vector<Piece*>);
-//
-//
-//    ~Board();
+    Piece* getPieceCopy(Piece* orig);
+
+    vector<Piece*> copyPieceVector(vector<Piece*> vec);
+
+    virtual ~Board();
 
 
     /**
      *----------------- VARIABLES ----------------------
      */
-
-    vector<Piece*> whitePieces = vector<Piece*>();
-    vector<Piece*> blackPieces = vector<Piece*>();
 
     int whiteCount = 16;
     int blackCount = 16;

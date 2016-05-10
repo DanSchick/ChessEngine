@@ -10,9 +10,12 @@
 
 class GameController {
 public:
-    GameController(Board game);
+    GameController(Board* game);
 
-    Board game;
+    Board* game;
+
+private:
+    bool whitesTurn = true;
 
 };
 
